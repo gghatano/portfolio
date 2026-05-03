@@ -1,0 +1,89 @@
+/*
+ * デザイントークン
+ * 方針: アクセント1色（朱／ink）、純黒・純白を避けた warm な neutrals。
+ * ライト/ダークは prefers-color-scheme と data-theme 上書きの両方に対応。
+ */
+:root {
+  --c-bg: #fbf8f1;
+  --c-bg-elev: #f3eee0;
+  --c-text: #1d1a14;
+  --c-text-muted: #5a554a;
+  --c-rule: #d9d2bd;
+  --c-rule-strong: #b6ad94;
+  --c-accent: #a8362f;
+  --c-accent-on-bg: #872824;
+  --c-link: var(--c-accent);
+  --c-focus: #4a6db5;
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  --font-serif: "Iowan Old Style", "Source Serif Pro", "Hiragino Mincho ProN", "Yu Mincho",
+    "YuMincho", serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --fs-base: 17px;
+  --lh-base: 1.8;
+  --fs-h1: 2.0rem;
+  --fs-h2: 1.45rem;
+  --fs-h3: 1.15rem;
+  --fs-small: 0.875rem;
+
+  --measure-prose: 68ch;
+  --measure-list: 1080px;
+  --measure-page: 1200px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+
+  --duration-quick: 150ms;
+  --easing-quick: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg: #131210;
+    --c-bg-elev: #1c1b18;
+    --c-text: #ece7d9;
+    --c-text-muted: #948f82;
+    --c-rule: #2c2a25;
+    --c-rule-strong: #4a463d;
+    --c-accent: #d27267;
+    --c-accent-on-bg: #d27267;
+    --c-link: var(--c-accent);
+    --c-focus: #8aa7e3;
+  }
+}
+
+/* ユーザーが明示的に切替えた場合、システム設定よりも data-theme 属性が優先 */
+:root[data-theme="light"] {
+  --c-bg: #fbf8f1;
+  --c-bg-elev: #f3eee0;
+  --c-text: #1d1a14;
+  --c-text-muted: #5a554a;
+  --c-rule: #d9d2bd;
+  --c-rule-strong: #b6ad94;
+  --c-accent: #a8362f;
+  --c-accent-on-bg: #872824;
+  --c-link: var(--c-accent);
+  --c-focus: #4a6db5;
+}
+
+:root[data-theme="dark"] {
+  --c-bg: #131210;
+  --c-bg-elev: #1c1b18;
+  --c-text: #ece7d9;
+  --c-text-muted: #948f82;
+  --c-rule: #2c2a25;
+  --c-rule-strong: #4a463d;
+  --c-accent: #d27267;
+  --c-accent-on-bg: #d27267;
+  --c-link: var(--c-accent);
+  --c-focus: #8aa7e3;
+}

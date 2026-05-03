@@ -1,0 +1,22 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <p>© {year} 畑野 拓馬</p>
+  <p class="meta">本サイトは Astro と Content Collections で組まれた静的サイトです。アクセス解析・サードパーティスクリプトは導入していません。</p>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--c-rule);
+    padding: var(--space-6) var(--space-5);
+    margin-top: var(--space-9);
+    color: var(--c-text-muted);
+    font-size: var(--fs-small);
+    max-width: var(--measure-page);
+    margin-inline: auto;
+  }
+  .meta {
+    margin-top: var(--space-2);
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  /** trailing slash を含む absolute or root-relative path */
+  path?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+}
+
+const { title, description, path, ogType = 'website', ogImage } = Astro.props;
+
+const siteUrl = Astro.site?.toString() ?? 'https://example.github.io/';
+const canonical = new URL(path ?? Astro.url.pathname, siteUrl).toString();
+
+// OG 画像はサイト共通テンプレを `public/og/default.png` として置く運用にしているが、
+// 公開先確定前は Phase 5 のタスクとして空にしておく（404 を踏ませない方が良い）。
+const og = ogImage ? new URL(ogImage, siteUrl).toString() : null;
+const twitterCard = og ? 'summary_large_image' : 'summary';
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonical} />
+{og && <meta property="og:image" content={og} />}
+<meta property="og:locale" content="ja_JP" />
+
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{og && <meta name="twitter:image" content={og} />}

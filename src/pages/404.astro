@@ -1,0 +1,19 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { url } from '~/lib/url';
+---
+<BaseLayout title="ページが見つかりません" description="お探しのページが見つかりませんでした。" path="/404/">
+  <section class="notfound">
+    <p class="kana">404 / Not Found</p>
+    <h1>ページが見つかりませんでした</h1>
+    <p>URL が変更された、もしくはタイプミスの可能性があります。</p>
+    <p class="back"><a href={url('/')}>ホームへ戻る →</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound { padding-block: var(--space-9); max-width: var(--measure-prose); }
+  .kana { font-size: 0.78rem; letter-spacing: 0.22em; color: var(--c-text-muted); margin-bottom: var(--space-3); }
+  h1 { font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.2rem); margin-bottom: var(--space-4); }
+  .back { margin-top: var(--space-6); }
+</style>

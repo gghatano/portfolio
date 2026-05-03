@@ -1,0 +1,84 @@
+---
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+// 簡易難読化: 静的 HTML には mailto: を出さない（クライアント側で組み立てる）。
+// JS 無効環境でも住所文字列は読めるので連絡可能。
+const mailUser = 'takuma.hatano';
+const mailHost = 'example.com';
+
+const socials = [
+  { label: 'GitHub', url: 'https://github.com/example' },
+  { label: 'X (Twitter)', url: 'https://x.com/example' },
+];
+---
+
+<BaseLayout
+  title="連絡先"
+  description="メール、SNS など連絡手段の一覧。"
+  path="/contact/"
+>
+  <SectionHeader eyebrow="Contact" title="連絡先" lead="登壇・寄稿・取材のご相談はこちらからお願いします。" />
+
+  <div class="lede">
+    <p>原則メールでのご連絡をお願いしています。SNS の DM でも対応可能です。返信は数日〜1 週間程度かかることがあります。</p>
+  </div>
+
+  <dl class="contacts">
+    <dt>メール</dt>
+    <dd>
+      <a class="email" data-mail-user={mailUser} data-mail-host={mailHost} href="#">
+        {mailUser}<span aria-hidden="true">{' [at] '}</span>{mailHost}
+      </a>
+      <small>JavaScript が有効なときはクリックでメーラーが開きます。</small>
+    </dd>
+    <dt>SNS</dt>
+    <dd>
+      <ul class="socials">
+        {socials.map((s) => (
+          <li><ExternalLink href={s.url} label={s.label} /></li>
+        ))}
+      </ul>
+    </dd>
+  </dl>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('a.email[data-mail-user][data-mail-host]').forEach((a) => {
+    const u = a.dataset.mailUser;
+    const h = a.dataset.mailHost;
+    if (!u || !h) return;
+    a.setAttribute('href', `mailto:${u}@${h}`);
+  });
+</script>
+
+<style>
+  .lede { max-width: var(--measure-prose); margin-bottom: var(--space-6); color: var(--c-text-muted); }
+  .contacts {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    column-gap: var(--space-5);
+    row-gap: var(--space-4);
+    border-top: 1px solid var(--c-rule);
+    padding-top: var(--space-5);
+  }
+  .contacts dt {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .contacts dd {
+    margin: 0;
+  }
+  .email {
+    font-size: 1.05rem;
+    font-feature-settings: 'tnum' 1;
+  }
+  .email small { display: block; margin-top: var(--space-2); color: var(--c-text-muted); }
+  .socials { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); }
+  @media (max-width: 600px) {
+    .contacts { grid-template-columns: 1fr; row-gap: var(--space-2); }
+    .contacts dt { padding-top: var(--space-3); }
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+// 明示切替（auto / light / dark）。SSG なので localStorage に保存し、
+// 初期化スクリプトは BaseLayout で <head> 内に inline する。
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  aria-label="表示テーマを切り替え"
+  title="表示テーマを切り替え"
+>
+  <span data-mode-label>auto</span>
+</button>
+
+<script>
+  type Mode = 'auto' | 'light' | 'dark';
+  const KEY = 'pf-theme';
+  const order: Mode[] = ['auto', 'light', 'dark'];
+
+  function read(): Mode {
+    const v = localStorage.getItem(KEY);
+    return v === 'light' || v === 'dark' || v === 'auto' ? v : 'auto';
+  }
+  function apply(mode: Mode) {
+    const root = document.documentElement;
+    if (mode === 'auto') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', mode);
+  }
+  function paintLabel(mode: Mode) {
+    document.querySelectorAll<HTMLElement>('[data-mode-label]').forEach((el) => {
+      el.textContent = mode;
+    });
+  }
+
+  const init = read();
+  apply(init);
+  paintLabel(init);
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cur = read();
+      const next = order[(order.indexOf(cur) + 1) % order.length] ?? 'auto';
+      localStorage.setItem(KEY, next);
+      apply(next);
+      paintLabel(next);
+    });
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    /* WCAG 2.5.5: tap target 44×44 */
+    min-height: 44px;
+    min-width: 64px;
+    padding: 0 0.9rem;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    transition:
+      color var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick);
+  }
+  .theme-toggle:hover {
+    color: var(--c-text);
+    border-color: var(--c-rule-strong);
+  }
+</style>

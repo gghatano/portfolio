@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatYearMonth } from '~/lib/format';
+
+const items = (await getCollection('career')).sort((a, b) =>
+  b.data.period_start.localeCompare(a.data.period_start),
+);
+---
+
+<BaseLayout
+  title="経歴"
+  description="職歴・学歴・在籍組織。年表形式で時系列に確認できます。"
+  path="/career/"
+>
+  <SectionHeader eyebrow="Career" title="経歴" lead="職歴・学歴を時系列でまとめています。" />
+
+  {items.length === 0 ? (
+    <p class="empty">経歴データはまだありません。</p>
+  ) : (
+    <ul class="rows">
+      {items.map((c) => (
+        <li>
+          <EntryRow date={`${formatYearMonth(c.data.period_start)}〜${formatYearMonth(c.data.period_end)}`}>
+            <h2 class="row-title">{c.data.organization}</h2>
+            <p class="role">{c.data.role}{c.data.location ? `・${c.data.location}` : ''}</p>
+            {c.data.summary && <p class="summary">{c.data.summary}</p>}
+            {c.data.highlights && c.data.highlights.length > 0 && (
+              <ul class="highlights">
+                {c.data.highlights.map((h) => <li>{h}</li>)}
+              </ul>
+            )}
+          </EntryRow>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  ul.rows {
+    list-style: none;
+  }
+  .row-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .role {
+    color: var(--c-text-muted);
+    margin-top: var(--space-1);
+  }
+  .summary {
+    margin-top: var(--space-3);
+  }
+  .highlights {
+    margin-top: var(--space-3);
+    padding-inline-start: 1.2em;
+    color: var(--c-text);
+  }
+  .highlights li {
+    margin-block: 0.2em;
+  }
+  .empty {
+    color: var(--c-text-muted);
+  }
+</style>

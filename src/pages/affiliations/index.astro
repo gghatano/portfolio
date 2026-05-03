@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatYearMonth } from '~/lib/format';
+
+const items = (await getCollection('affiliations')).sort((a, b) =>
+  b.data.period_start.localeCompare(a.data.period_start),
+);
+---
+
+<BaseLayout
+  title="所属"
+  description="所属している学会・コミュニティ・団体の一覧。"
+  path="/affiliations/"
+>
+  <SectionHeader eyebrow="Affiliations" title="所属" lead="学会・コミュニティ・所属団体です。" />
+
+  {items.length === 0 ? (
+    <p class="empty">所属情報はまだありません。</p>
+  ) : (
+    <ul class="rows">
+      {items.map((a) => (
+        <li>
+          <EntryRow date={`${formatYearMonth(a.data.period_start)}〜${formatYearMonth(a.data.period_end)}`}>
+            <h2 class="row-title">
+              {a.data.url ? <ExternalLink href={a.data.url} label={a.data.organization} /> : a.data.organization}
+            </h2>
+            {a.data.role && <p class="role">{a.data.role}</p>}
+            {a.data.summary && <p class="summary">{a.data.summary}</p>}
+          </EntryRow>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  ul.rows { list-style: none; }
+  .row-title { font-size: 1.1rem; font-weight: 600; }
+  .role { color: var(--c-text-muted); margin-top: var(--space-1); }
+  .summary { margin-top: var(--space-3); }
+  .empty { color: var(--c-text-muted); }
+</style>

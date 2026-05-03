@@ -1,0 +1,79 @@
+---
+import '~/styles/tokens.css';
+import '~/styles/reset.css';
+import '~/styles/typography.css';
+import Meta from '~/components/meta/Meta.astro';
+import SiteFooter from '~/components/nav/SiteFooter.astro';
+import SiteHeader from '~/components/nav/SiteHeader.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+}
+
+const { title, description, path, ogType, ogImage } = Astro.props;
+const siteTitleSuffix = '畑野 拓馬';
+const fullTitle = title === siteTitleSuffix ? title : `${title} | ${siteTitleSuffix}`;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <Meta
+      title={fullTitle}
+      description={description}
+      path={path}
+      ogType={ogType}
+      ogImage={ogImage}
+    />
+    <script is:inline>
+      // FOUC 回避: 初期テーマを <html data-theme> に同期する
+      (function () {
+        try {
+          var v = localStorage.getItem('pf-theme');
+          if (v === 'light' || v === 'dark') {
+            document.documentElement.setAttribute('data-theme', v);
+          }
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">本文へスキップ</a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <style>
+      main {
+        max-width: var(--measure-page);
+        margin-inline: auto;
+        padding: var(--space-7) var(--space-5) var(--space-8);
+      }
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+      }
+      .skip-link:focus {
+        position: static;
+        display: inline-block;
+        margin: var(--space-3) var(--space-5);
+        padding: var(--space-2) var(--space-4);
+        background: var(--c-bg-elev);
+        color: var(--c-text);
+        text-decoration: underline;
+      }
+    </style>
+  </body>
+</html>

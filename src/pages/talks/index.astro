@@ -1,0 +1,180 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatDate, yearOf } from '~/lib/format';
+import { talkTypeLabel } from '~/lib/labels';
+import { url } from '~/lib/url';
+
+const items = (await getCollection('talks')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+
+type Talk = CollectionEntry<'talks'>;
+const groups = items.reduce<Record<string, Talk[]>>((acc, item) => {
+  const y = yearOf(item.data.date);
+  const arr = acc[y] ?? [];
+  arr.push(item);
+  acc[y] = arr;
+  return acc;
+}, {});
+const years = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+const allTypes = Array.from(new Set(items.map((i) => i.data.type)));
+---
+
+<BaseLayout
+  title="発表"
+  description="登壇・講演の一覧。基調・招待・口頭・LT・パネル・ポスターなどを年単位でまとめています。"
+  path="/talks/"
+>
+  <SectionHeader eyebrow="Talks" title="発表" lead="登壇・講演の記録です。" />
+
+  {items.length === 0 ? (
+    <p class="empty">まだ登壇情報はありません。</p>
+  ) : (
+    <>
+      <div class="filter" data-filter-root>
+        <span class="filter-label">種別で絞り込み:</span>
+        <button type="button" data-filter="all" aria-pressed="true">すべて</button>
+        {allTypes.map((t) => (
+          <button type="button" data-filter={t} aria-pressed="false">{talkTypeLabel[t]}</button>
+        ))}
+      </div>
+
+      {years.map((y) => (
+        <section class="year-group" data-year={y}>
+          <h2 class="year-heading"><span>{y}</span></h2>
+          <ul class="rows">
+            {(groups[y] ?? []).map((t) => (
+              <li data-type={t.data.type}>
+                <EntryRow date={formatDate(t.data.date)} dateTime={t.data.date} badge={talkTypeLabel[t.data.type]}>
+                  <h3 class="row-title">
+                    <a href={url(`/talks/${t.id.replace(/\.md$/u, '')}/`)}>{t.data.title}</a>
+                  </h3>
+                  <p class="meta-line">
+                    <span>{t.data.event}</span>
+                    {t.data.location && <span> · {t.data.location}</span>}
+                    {t.data.language === 'en' && <span class="lang">EN</span>}
+                  </p>
+                  <p class="links">
+                    {t.data.slides_url && <ExternalLink href={t.data.slides_url} label="スライド" />}
+                    {t.data.video_url && <ExternalLink href={t.data.video_url} label="動画" />}
+                  </p>
+                </EntryRow>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </>
+  )}
+</BaseLayout>
+
+<script>
+  const root = document.querySelector('[data-filter-root]');
+  if (root) {
+    root.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLButtonElement)) return;
+      const filter = t.dataset.filter;
+      if (!filter) return;
+      root.querySelectorAll<HTMLButtonElement>('button[data-filter]').forEach((b) => {
+        b.setAttribute('aria-pressed', b === t ? 'true' : 'false');
+      });
+      document.querySelectorAll<HTMLLIElement>('li[data-type]').forEach((li) => {
+        li.hidden = filter !== 'all' && li.dataset.type !== filter;
+      });
+      document.querySelectorAll<HTMLElement>('section.year-group').forEach((sec) => {
+        const visible = sec.querySelectorAll<HTMLLIElement>('li[data-type]:not([hidden])').length;
+        sec.hidden = visible === 0;
+      });
+    });
+  }
+</script>
+
+<style>
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    padding-block: var(--space-3);
+    border-bottom: 1px dashed var(--c-rule);
+    margin-bottom: var(--space-5);
+  }
+  .filter-label {
+    color: var(--c-text-muted);
+    font-size: 0.85rem;
+    margin-inline-end: var(--space-2);
+  }
+  .filter button {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    padding: 0 0.9rem;
+    min-height: 44px;
+    line-height: 1;
+    transition: color var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick),
+      background-color var(--duration-quick) var(--easing-quick);
+  }
+  .filter button[aria-pressed='true'] {
+    color: var(--c-bg);
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+  .filter button:hover { color: var(--c-text); }
+  .filter button[aria-pressed='true']:hover { color: var(--c-bg); }
+
+  .year-group { padding-block: var(--space-5) var(--space-3); }
+  .year-heading {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--c-text-muted);
+    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .year-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--c-rule);
+  }
+
+  ul.rows { list-style: none; }
+  .row-title { font-size: 1.05rem; font-weight: 600; }
+  .row-title a {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .row-title a:hover {
+    border-bottom-color: var(--c-accent);
+  }
+  .meta-line {
+    color: var(--c-text-muted);
+    margin-top: var(--space-1);
+    font-size: 0.92rem;
+  }
+  .lang {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--c-rule);
+    padding: 0 0.4em;
+    margin-inline-start: 0.5em;
+    border-radius: 4px;
+  }
+  .links {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-size: 0.92rem;
+  }
+  .empty { color: var(--c-text-muted); }
+</style>

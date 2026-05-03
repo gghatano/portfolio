@@ -1,0 +1,137 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatDate } from '~/lib/format';
+import { talkTypeLabel } from '~/lib/labels';
+import { url } from '~/lib/url';
+
+export async function getStaticPaths() {
+  const items = await getCollection('talks');
+  return items.map((item) => ({
+    params: { slug: item.id.replace(/\.md$/u, '') },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CollectionEntry<'talks'>;
+}
+const { item } = Astro.props;
+const { Content } = await item.render();
+const d = item.data;
+
+// 動画 URL があれば PresentationDigitalDocument、それ以外は Event を出す。
+// 双方を併記すると schema.org Validator では問題ないが、Rich Results では混乱を生むので一本化する。
+const talkJsonLd: Record<string, unknown> = d.video_url
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'PresentationDigitalDocument',
+      name: d.title,
+      datePublished: d.date,
+      inLanguage: d.language,
+      url: d.slides_url ?? d.video_url,
+      publisher: { '@type': 'Organization', name: d.event },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: d.title,
+      startDate: d.date,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: d.location
+        ? { '@type': 'Place', name: d.location }
+        : { '@type': 'VirtualLocation', url: d.slides_url ?? '' },
+      organizer: { '@type': 'Organization', name: d.event },
+    };
+---
+
+<BaseLayout
+  title={d.title}
+  description={`${d.event} での発表「${d.title}」のサマリー。`}
+  path={`/talks/${item.id.replace(/\.md$/u, '')}/`}
+  ogType="article"
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(talkJsonLd)} />
+
+  <nav class="crumb" aria-label="パンくず">
+    <a href={url('/')}>ホーム</a> / <a href={url('/talks/')}>発表</a> / <span aria-current="page">{d.title}</span>
+  </nav>
+
+  <article class="detail">
+    <header class="head">
+      <p class="badge-line">
+        <time datetime={d.date}>{formatDate(d.date)}</time>
+        <span class="badge">{talkTypeLabel[d.type]}</span>
+        {d.language === 'en' && <span class="lang">EN</span>}
+      </p>
+      <h1>{d.title}</h1>
+      <p class="venue">{d.event}{d.location ? ` · ${d.location}` : ''}</p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {(d.slides_url || d.video_url) && (
+      <section class="links" aria-label="関連リンク">
+        <h2>関連リンク</h2>
+        <ul>
+          {d.slides_url && <li><ExternalLink href={d.slides_url} label="スライド" /></li>}
+          {d.video_url && <li><ExternalLink href={d.video_url} label="動画" /></li>}
+        </ul>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .crumb {
+    color: var(--c-text-muted);
+    font-size: 0.85rem;
+    margin-bottom: var(--space-5);
+  }
+  .crumb a {
+    color: var(--c-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .crumb a:hover { border-bottom-color: var(--c-rule-strong); color: var(--c-text); }
+
+  .detail { max-width: var(--measure-prose); }
+  .head { padding-block: var(--space-3) var(--space-6); border-bottom: 1px solid var(--c-rule); }
+  .badge-line {
+    color: var(--c-text-muted);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+  }
+  .badge {
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    padding: 0.05rem 0.55rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lang {
+    font-size: 0.7rem;
+    border: 1px solid var(--c-rule);
+    padding: 0 0.4em;
+    border-radius: 4px;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem);
+    line-height: 1.3;
+  }
+  .venue { margin-top: var(--space-3); color: var(--c-text-muted); }
+
+  .prose { padding-block: var(--space-6); }
+  .links { padding-block: var(--space-5); border-top: 1px solid var(--c-rule); }
+  .links h2 { font-size: 1rem; margin-bottom: var(--space-3); }
+  .links ul { list-style: none; display: flex; gap: var(--space-5); flex-wrap: wrap; }
+</style>

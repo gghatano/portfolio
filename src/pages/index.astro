@@ -1,0 +1,190 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatDate, formatYearMonth } from '~/lib/format';
+import { publicationTypeLabel, talkTypeLabel } from '~/lib/labels';
+import { url } from '~/lib/url';
+
+const profileEntry = await getEntry('profile', 'main');
+if (!profileEntry) throw new Error('profile/main.json が見つかりません');
+const profile = profileEntry.data;
+const paragraphs = profile.bio_md.split(/\n\n+/u);
+
+const talks = (await getCollection('talks'))
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, 3);
+const publications = (await getCollection('publications'))
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, 3);
+const careerEntries = (await getCollection('career'))
+  .sort((a, b) => b.data.period_start.localeCompare(a.data.period_start))
+  .slice(0, 3);
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name_ja,
+  alternateName: profile.name_en,
+  description: profile.tagline,
+  url: Astro.site?.toString(),
+  sameAs: profile.links.map((l) => l.url),
+};
+---
+
+<BaseLayout
+  title="畑野 拓馬"
+  description={`${profile.tagline}。経歴・発表・論文・所属の起点となる自己紹介サイト。`}
+  path="/"
+  ogType="website"
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+
+  <section class="hero">
+    <p class="kana">Hatano Takuma</p>
+    <h1>{profile.name_ja}</h1>
+    <p class="tagline">{profile.tagline}</p>
+  </section>
+
+  <section class="bio">
+    {paragraphs.map((p) => <p>{p}</p>)}
+    {profile.links.length > 0 && (
+      <ul class="links">
+        {profile.links.map((l) => (
+          <li>
+            <ExternalLink href={l.url}>{l.label}</ExternalLink>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <hr />
+
+  <section class="preview" aria-labelledby="preview-talks">
+    <h2 id="preview-talks">直近の発表</h2>
+    {talks.length === 0 ? (
+      <p class="empty">まだ登壇情報はありません。</p>
+    ) : (
+      <ul class="rows">
+        {talks.map((t) => (
+          <li>
+            <EntryRow date={formatDate(t.data.date)} dateTime={t.data.date} badge={talkTypeLabel[t.data.type]}>
+              <h3 class="row-title"><a href={url(`/talks/${t.id.replace(/\.md$/u, '')}/`)}>{t.data.title}</a></h3>
+              <p class="row-meta">{t.data.event}{t.data.location ? `（${t.data.location}）` : ''}</p>
+            </EntryRow>
+          </li>
+        ))}
+      </ul>
+    )}
+    <p class="more"><a href={url('/talks/')}>すべての発表を見る →</a></p>
+  </section>
+
+  <section class="preview" aria-labelledby="preview-pubs">
+    <h2 id="preview-pubs">直近の論文・寄稿</h2>
+    {publications.length === 0 ? (
+      <p class="empty">まだ論文・寄稿はありません。</p>
+    ) : (
+      <ul class="rows">
+        {publications.map((p) => (
+          <li>
+            <EntryRow date={formatDate(p.data.date)} dateTime={p.data.date} badge={publicationTypeLabel[p.data.type]}>
+              <h3 class="row-title"><a href={url(`/publications/${p.id.replace(/\.md$/u, '')}/`)}>{p.data.title}</a></h3>
+              <p class="row-meta">{p.data.venue}</p>
+            </EntryRow>
+          </li>
+        ))}
+      </ul>
+    )}
+    <p class="more"><a href={url('/publications/')}>すべての論文・寄稿を見る →</a></p>
+  </section>
+
+  <section class="preview" aria-labelledby="preview-career">
+    <h2 id="preview-career">経歴</h2>
+    <ul class="rows">
+      {careerEntries.map((c) => (
+        <li>
+          <EntryRow date={`${formatYearMonth(c.data.period_start)}〜${formatYearMonth(c.data.period_end)}`}>
+            <h3 class="row-title">{c.data.organization}</h3>
+            <p class="row-meta">{c.data.role}</p>
+          </EntryRow>
+        </li>
+      ))}
+    </ul>
+    <p class="more"><a href={url('/career/')}>すべての経歴を見る →</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-8) var(--space-6);
+    border-bottom: 1px solid var(--c-rule);
+  }
+  .kana {
+    color: var(--c-text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 1.6rem + 3.5vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+  .tagline {
+    margin-top: var(--space-4);
+    color: var(--c-text-muted);
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
+    max-width: var(--measure-prose);
+  }
+  .bio {
+    padding-block: var(--space-7);
+    max-width: var(--measure-prose);
+  }
+  .bio .links {
+    list-style: none;
+    margin-top: var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .preview {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--c-rule);
+  }
+  .preview h2 {
+    margin-bottom: var(--space-4);
+  }
+  ul.rows {
+    list-style: none;
+  }
+  .row-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .row-title a {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .row-title a:hover {
+    border-bottom-color: var(--c-accent);
+  }
+  .row-meta {
+    color: var(--c-text-muted);
+    font-size: 0.92rem;
+    margin-top: var(--space-1);
+  }
+  .more {
+    margin-top: var(--space-5);
+    color: var(--c-text-muted);
+  }
+  .empty {
+    color: var(--c-text-muted);
+    padding-block: var(--space-3);
+  }
+</style>

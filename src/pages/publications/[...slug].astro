@@ -1,0 +1,131 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { plainAuthorName, renderAuthors } from '~/lib/authors';
+import { formatDate } from '~/lib/format';
+import { publicationTypeLabel } from '~/lib/labels';
+import { url } from '~/lib/url';
+
+export async function getStaticPaths() {
+  const items = await getCollection('publications');
+  return items.map((item) => ({
+    params: { slug: item.id.replace(/\.md$/u, '') },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CollectionEntry<'publications'>;
+}
+const { item } = Astro.props;
+const { Content } = await item.render();
+const d = item.data;
+
+const articleJsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: d.title,
+  datePublished: d.date,
+  author: d.authors.map((a) => ({ '@type': 'Person', name: plainAuthorName(a) })),
+  isPartOf: { '@type': 'Periodical', name: d.venue },
+};
+if (d.doi) articleJsonLd.identifier = `doi:${d.doi}`;
+if (d.pdf_url) articleJsonLd.url = d.pdf_url;
+---
+
+<BaseLayout
+  title={d.title}
+  description={`${d.venue} 掲載「${d.title}」の概要。`}
+  path={`/publications/${item.id.replace(/\.md$/u, '')}/`}
+  ogType="article"
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+
+  <nav class="crumb" aria-label="パンくず">
+    <a href={url('/')}>ホーム</a> / <a href={url('/publications/')}>論文・寄稿</a> / <span aria-current="page">{d.title}</span>
+  </nav>
+
+  <article class="detail">
+    <header class="head">
+      <p class="badge-line">
+        <time datetime={d.date}>{formatDate(d.date)}</time>
+        <span class="badge">{publicationTypeLabel[d.type]}</span>
+      </p>
+      <h1>{d.title}</h1>
+      <p class="authors" set:html={renderAuthors(d.authors)} />
+      <p class="venue">{d.venue}</p>
+    </header>
+
+    <section class="prose" aria-labelledby="abstract-heading">
+      <h2 id="abstract-heading">概要</h2>
+      <Content />
+    </section>
+
+    {(d.doi || d.pdf_url || (d.links && d.links.length > 0)) && (
+      <section class="links" aria-label="関連リンク">
+        <h2>関連リンク</h2>
+        <ul>
+          {d.doi && <li><ExternalLink href={`https://doi.org/${d.doi}`} label={`DOI: ${d.doi}`} /></li>}
+          {d.pdf_url && <li><ExternalLink href={d.pdf_url} label="PDF" /></li>}
+          {d.links?.map((l) => <li><ExternalLink href={l.url} label={l.label} /></li>)}
+        </ul>
+      </section>
+    )}
+
+    {d.bibtex && (
+      <section class="bibtex" aria-labelledby="bibtex-heading">
+        <h2 id="bibtex-heading">BibTeX</h2>
+        <pre><code>{d.bibtex}</code></pre>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .crumb { color: var(--c-text-muted); font-size: 0.85rem; margin-bottom: var(--space-5); }
+  .crumb a { color: var(--c-text-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .crumb a:hover { color: var(--c-text); border-bottom-color: var(--c-rule-strong); }
+
+  .detail { max-width: var(--measure-prose); }
+  .head { padding-block: var(--space-3) var(--space-6); border-bottom: 1px solid var(--c-rule); }
+  .badge-line {
+    color: var(--c-text-muted);
+    display: flex; gap: var(--space-3); align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-3);
+  }
+  .badge {
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    padding: 0.05rem 0.55rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.1rem);
+    line-height: 1.35;
+  }
+  .authors { margin-top: var(--space-3); color: var(--c-text-muted); }
+  .authors :global(strong.self) { color: var(--c-text); font-weight: 600; }
+  .venue { color: var(--c-text-muted); font-style: italic; margin-top: var(--space-1); }
+
+  .prose { padding-block: var(--space-6); }
+  .prose h2 { font-size: 1rem; letter-spacing: 0.08em; margin-bottom: var(--space-3); color: var(--c-text-muted); }
+
+  .links { padding-block: var(--space-5); border-top: 1px solid var(--c-rule); }
+  .links h2 { font-size: 1rem; margin-bottom: var(--space-3); }
+  .links ul { list-style: none; display: flex; gap: var(--space-5); flex-wrap: wrap; }
+
+  .bibtex { padding-block: var(--space-5); border-top: 1px solid var(--c-rule); }
+  .bibtex h2 { font-size: 1rem; margin-bottom: var(--space-3); }
+  .bibtex pre {
+    background: var(--c-bg-elev);
+    padding: var(--space-4);
+    overflow-x: auto;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import { url } from '~/lib/url';
+import ThemeToggle from './ThemeToggle.astro';
+
+const items: Array<{ href: string; label: string }> = [
+  { href: '/', label: 'ホーム' },
+  { href: '/career/', label: '経歴' },
+  { href: '/talks/', label: '発表' },
+  { href: '/publications/', label: '論文・寄稿' },
+  { href: '/affiliations/', label: '所属' },
+  { href: '/contact/', label: '連絡先' },
+];
+
+const here = Astro.url.pathname.replace(/\/$/u, '') || '/';
+const baseStripped = (() => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/u, '');
+  return here.startsWith(base) ? here.slice(base.length) || '/' : here;
+})();
+---
+
+<header class="site-header">
+  <a href={url('/')} class="brand" rel="home">畑野 拓馬 <span class="brand-en">Takuma Hatano</span></a>
+  <nav aria-label="サイトナビゲーション" class="primary-nav">
+    <ul>
+      {items.map((it) => {
+        const target = it.href.replace(/\/$/u, '') || '/';
+        const isCurrent = target === baseStripped || (target !== '/' && baseStripped.startsWith(target));
+        return (
+          <li>
+            <a href={url(it.href)} aria-current={isCurrent ? 'page' : undefined}>{it.label}</a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+  <ThemeToggle />
+</header>
+
+<style>
+  .site-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    border-bottom: 1px solid var(--c-rule);
+    max-width: var(--measure-page);
+    margin: 0 auto;
+  }
+
+  .brand {
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+  .brand-en {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--c-text-muted);
+    letter-spacing: 0.06em;
+    margin-top: 0.15rem;
+  }
+
+  .primary-nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-5);
+    justify-content: flex-end;
+  }
+  .primary-nav a {
+    text-decoration: none;
+    color: var(--c-text-muted);
+    padding-block: var(--space-1);
+    border-bottom: 1px solid transparent;
+    transition: color var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick);
+  }
+  .primary-nav a:hover {
+    color: var(--c-text);
+  }
+  .primary-nav a[aria-current='page'] {
+    color: var(--c-text);
+    border-bottom-color: var(--c-accent);
+  }
+
+  @media (max-width: 720px) {
+    .site-header {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'brand toggle'
+        'nav nav';
+      align-items: center;
+    }
+    .brand { grid-area: brand; }
+    .primary-nav { grid-area: nav; }
+    .primary-nav ul { justify-content: flex-start; }
+  }
+</style>

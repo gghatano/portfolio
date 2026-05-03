@@ -1,0 +1,91 @@
+html {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--c-text);
+  background: var(--c-bg);
+  font-feature-settings: "palt" 1;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100svh;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.35;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  letter-spacing: -0.005em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+p {
+  max-width: var(--measure-prose);
+}
+
+p + p {
+  margin-top: 1em;
+}
+
+a {
+  color: var(--c-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--duration-quick) var(--easing-quick);
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-bg);
+}
+
+small {
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--c-rule);
+  margin: var(--space-7) 0;
+}
+
+blockquote {
+  border-inline-start: 2px solid var(--c-accent);
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  color: var(--c-text-muted);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+pre code {
+  display: block;
+  padding: var(--space-4);
+  background: var(--c-bg-elev);
+  overflow-x: auto;
+}

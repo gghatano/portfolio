@@ -1,0 +1,148 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { renderAuthors } from '~/lib/authors';
+import { formatDate, yearOf } from '~/lib/format';
+import { publicationTypeLabel } from '~/lib/labels';
+import { url } from '~/lib/url';
+
+const items = (await getCollection('publications')).sort((a, b) =>
+  b.data.date.localeCompare(a.data.date),
+);
+
+type Pub = CollectionEntry<'publications'>;
+const groups = items.reduce<Record<string, Pub[]>>((acc, item) => {
+  const y = yearOf(item.data.date);
+  const arr = acc[y] ?? [];
+  arr.push(item);
+  acc[y] = arr;
+  return acc;
+}, {});
+const years = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+const allTypes = Array.from(new Set(items.map((i) => i.data.type)));
+---
+
+<BaseLayout
+  title="論文・寄稿"
+  description="論文誌・国際会議・寄稿の一覧。年単位でまとめています。"
+  path="/publications/"
+>
+  <SectionHeader
+    eyebrow="Publications"
+    title="論文・寄稿"
+    lead="査読付き論文と寄稿記事を掲載しています。著者リストの太字が自分です。"
+  />
+
+  {items.length === 0 ? (
+    <p class="empty">まだ論文・寄稿はありません。</p>
+  ) : (
+    <>
+      <div class="filter" data-filter-root>
+        <span class="filter-label">種別で絞り込み:</span>
+        <button type="button" data-filter="all" aria-pressed="true">すべて</button>
+        {allTypes.map((t) => (
+          <button type="button" data-filter={t} aria-pressed="false">{publicationTypeLabel[t]}</button>
+        ))}
+      </div>
+
+      {years.map((y) => (
+        <section class="year-group">
+          <h2 class="year-heading"><span>{y}</span></h2>
+          <ul class="rows">
+            {(groups[y] ?? []).map((p) => (
+              <li data-type={p.data.type}>
+                <EntryRow date={formatDate(p.data.date)} dateTime={p.data.date} badge={publicationTypeLabel[p.data.type]}>
+                  <h3 class="row-title">
+                    <a href={url(`/publications/${p.id.replace(/\.md$/u, '')}/`)}>{p.data.title}</a>
+                  </h3>
+                  <p class="authors" set:html={renderAuthors(p.data.authors)} />
+                  <p class="venue">{p.data.venue}</p>
+                  <p class="links">
+                    {p.data.doi && <ExternalLink href={`https://doi.org/${p.data.doi}`} label={`DOI: ${p.data.doi}`} />}
+                    {p.data.pdf_url && <ExternalLink href={p.data.pdf_url} label="PDF" />}
+                  </p>
+                </EntryRow>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </>
+  )}
+</BaseLayout>
+
+<script>
+  const root = document.querySelector('[data-filter-root]');
+  if (root) {
+    root.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLButtonElement)) return;
+      const filter = t.dataset.filter;
+      if (!filter) return;
+      root.querySelectorAll<HTMLButtonElement>('button[data-filter]').forEach((b) => {
+        b.setAttribute('aria-pressed', b === t ? 'true' : 'false');
+      });
+      document.querySelectorAll<HTMLLIElement>('li[data-type]').forEach((li) => {
+        li.hidden = filter !== 'all' && li.dataset.type !== filter;
+      });
+      document.querySelectorAll<HTMLElement>('section.year-group').forEach((sec) => {
+        const visible = sec.querySelectorAll<HTMLLIElement>('li[data-type]:not([hidden])').length;
+        sec.hidden = visible === 0;
+      });
+    });
+  }
+</script>
+
+<style>
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    padding-block: var(--space-3);
+    border-bottom: 1px dashed var(--c-rule);
+    margin-bottom: var(--space-5);
+  }
+  .filter-label { color: var(--c-text-muted); font-size: 0.85rem; }
+  .filter button {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    padding: 0 0.9rem;
+    min-height: 44px;
+    line-height: 1;
+  }
+  .filter button[aria-pressed='true'] {
+    color: var(--c-bg);
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+  .filter button:hover { color: var(--c-text); }
+  .filter button[aria-pressed='true']:hover { color: var(--c-bg); }
+
+  .year-group { padding-block: var(--space-5) var(--space-3); }
+  .year-heading {
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--c-text-muted);
+    font-weight: 500;
+    display: flex; align-items: center; gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .year-heading::after { content: ''; flex: 1; height: 1px; background: var(--c-rule); }
+
+  ul.rows { list-style: none; }
+  .row-title { font-size: 1.05rem; font-weight: 600; }
+  .row-title a { text-decoration: none; border-bottom: 1px solid transparent; }
+  .row-title a:hover { border-bottom-color: var(--c-accent); }
+  .authors { color: var(--c-text-muted); margin-top: var(--space-1); font-size: 0.92rem; }
+  .authors :global(strong.self) { color: var(--c-text); font-weight: 600; }
+  .venue { color: var(--c-text-muted); font-size: 0.92rem; font-style: italic; margin-top: var(--space-1); }
+  .links { margin-top: var(--space-2); display: flex; gap: var(--space-4); flex-wrap: wrap; font-size: 0.92rem; }
+  .empty { color: var(--c-text-muted); }
+</style>
