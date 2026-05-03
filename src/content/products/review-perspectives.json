@@ -1,0 +1,10 @@
+{
+  "name": "Review Perspectives（架空）",
+  "tagline": "コードレビュー観点ドキュメントを構造化し、PR コメントに自動展開する社内ツール。観点の追従率を計測する補助ダッシュボード付き。",
+  "period_start": "2024-04",
+  "period_end": "present",
+  "role": "主導",
+  "tech": ["TypeScript", "Node.js", "GitHub Actions", "PostgreSQL"],
+  "links": [{ "label": "発表", "url": "https://example.com/slides/devopscon-2024" }],
+  "priority": 2
+}

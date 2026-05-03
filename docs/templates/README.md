@@ -10,6 +10,7 @@
 | 論文・寄稿 | [`publication.md.template`](publication.md.template) | `src/content/publications/<slug>.md` | `.md` |
 | 経歴 | [`career.json.template`](career.json.template) | `src/content/career/<slug>.json` | `.json` |
 | 所属 | [`affiliation.json.template`](affiliation.json.template) | `src/content/affiliations/<slug>.json` | `.json` |
+| プロダクト | [`product.json.template`](product.json.template) | `src/content/products/<slug>.json` | `.json` |
 
 profile (`src/content/profile/main.json`) は singleton なので雛形は持たない。直接編集する。
 

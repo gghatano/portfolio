@@ -11,6 +11,7 @@ Claude Code でこのリポジトリを開いているとき、コンテンツ�
 | `/add-publication` | 論文・寄稿エントリを追加 | `<メモ or #issue>` |
 | `/add-career` | 経歴エントリを追加 | `<メモ or #issue>` |
 | `/add-affiliation` | 所属エントリを追加 | `<メモ or #issue>` |
+| `/add-product` | プロダクトエントリを追加 | `<メモ or #issue>` |
 | `/update-content` | 既存コンテンツを更新 | `<slug or path> <メモ or #issue>` |
 
 ## 使い方

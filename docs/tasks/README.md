@@ -15,6 +15,7 @@
 - Phase 6: 公開
   - [task-001 GitHub Pages デプロイワークフロー](phase-06/task-001-pages-deploy.md)
   - [task-002 コンテンツ追加テンプレート / スキル整備](phase-06/task-002-templates-skills.md)
+  - [task-003 home redesign + products コレクション](phase-06/task-003-home-products.md)
 
 ## 運用ルール
 

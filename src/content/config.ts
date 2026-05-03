@@ -92,12 +92,29 @@ const affiliations = defineCollection({
   }),
 });
 
+// プロダクト / 開発したもの。トップページに常時全件表示する想定なので、
+// priority で手動順位を付けられるようにしておく（priority 小→大、未指定は末尾）。
+const products = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string().min(1),
+    tagline: z.string().min(1),
+    period_start: yearMonth.optional(),
+    period_end: yearMonthOrPresent.optional(),
+    role: z.string().optional(),
+    tech: z.array(z.string()).optional(),
+    links: z.array(linkSchema).optional(),
+    priority: z.number().int().optional(),
+  }),
+});
+
 export const collections = {
   profile,
   career,
   talks,
   publications,
   affiliations,
+  products,
 };
 
 export type TalkType = z.infer<typeof talkType>;

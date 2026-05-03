@@ -1,0 +1,9 @@
+{
+  "name": "Billing Platform 刷新（架空）",
+  "tagline": "前職での課金基盤の段階的リリース基盤刷新。再発率 60% 削減、週次オンコール体制の設計。",
+  "period_start": "2020-04",
+  "period_end": "2022-03",
+  "role": "テックリード",
+  "tech": ["TypeScript", "Go", "AWS", "Terraform"],
+  "priority": 4
+}

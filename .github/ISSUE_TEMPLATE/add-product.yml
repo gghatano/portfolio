@@ -1,0 +1,65 @@
+name: プロダクトを追加
+description: 開発したものをトップページに常時表示するためのテンプレート
+title: "[product] "
+labels: ["content", "content:product"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        プロダクト (product) エントリを追加します。
+        Issue 作成後、ローカルで `/from-issue <#>` または `/add-product <#>` を実行してファイル生成。
+        フォーマットの詳細は [`docs/templates/product.json.template`](../../docs/templates/product.json.template)。
+
+  - type: input
+    id: name
+    attributes:
+      label: 名称
+    validations:
+      required: true
+
+  - type: textarea
+    id: tagline
+    attributes:
+      label: 1〜2 行説明
+      description: トップページの一覧で本文として表示される。
+    validations:
+      required: true
+
+  - type: input
+    id: period_start
+    attributes:
+      label: 開始 (YYYY-MM、任意)
+      placeholder: 2024-04
+
+  - type: input
+    id: period_end
+    attributes:
+      label: 終了 (YYYY-MM または present、任意)
+      placeholder: present
+
+  - type: input
+    id: role
+    attributes:
+      label: 役割（任意）
+      placeholder: 個人開発 / 主導 / OSS contributor / テックリード など
+
+  - type: input
+    id: tech
+    attributes:
+      label: 主要技術（カンマ区切り、任意）
+      placeholder: TypeScript, Astro, Zod
+
+  - type: textarea
+    id: links
+    attributes:
+      label: 関連リンク（任意 / 1 行 1 件 / `ラベル | URL`）
+      placeholder: |
+        Repo | https://github.com/example/foo
+        Live | https://example.com
+
+  - type: input
+    id: priority
+    attributes:
+      label: 表示順 (整数、任意)
+      description: 小さいほど先頭。同じ priority は period_start の新しい順。
+      placeholder: "1"

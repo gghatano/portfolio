@@ -1,0 +1,13 @@
+{
+  "name": "畑野ポートフォリオ",
+  "tagline": "このサイトそのもの。Astro + TS + Content Collections で組んだ、テンプレ感のない自己紹介ハブ。",
+  "period_start": "2026-05",
+  "period_end": "present",
+  "role": "個人開発",
+  "tech": ["Astro", "TypeScript", "Zod", "Biome", "GitHub Pages"],
+  "links": [
+    { "label": "Repo", "url": "https://github.com/gghatano/portfolio" },
+    { "label": "Live", "url": "https://gghatano.github.io/portfolio/" }
+  ],
+  "priority": 1
+}

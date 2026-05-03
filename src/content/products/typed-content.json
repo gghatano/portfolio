@@ -1,0 +1,10 @@
+{
+  "name": "typed-content（架空 OSS）",
+  "tagline": "Markdown コンテンツに対する Zod ベースのバリデータ。Astro Content Collections の運用知見を切り出した小さなライブラリ。",
+  "period_start": "2025-02",
+  "period_end": "present",
+  "role": "OSS / 個人",
+  "tech": ["TypeScript", "Zod"],
+  "links": [{ "label": "Repo", "url": "https://github.com/example/typed-content" }],
+  "priority": 3
+}

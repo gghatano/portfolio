@@ -1,0 +1,10 @@
+{
+  "name": "Monorepo CI 高速化（架空）",
+  "tagline": "30 分かかっていたモノレポ CI を 7 分に。依存グラフ可視化と並列度・キャッシュ戦略の見直し。",
+  "period_start": "2022-04",
+  "period_end": "2023-03",
+  "role": "主導",
+  "tech": ["TypeScript", "Turborepo", "GitHub Actions"],
+  "links": [{ "label": "登壇 LT", "url": "https://example.com/slides/builderscon-lt" }],
+  "priority": 5
+}

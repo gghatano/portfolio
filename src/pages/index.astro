@@ -11,6 +11,17 @@ const profileEntry = await getEntry('profile', 'main');
 if (!profileEntry) throw new Error('profile/main.json が見つかりません');
 const profile = profileEntry.data;
 const paragraphs = profile.bio_md.split(/\n\n+/u);
+const lede = paragraphs[0] ?? '';
+const restBio = paragraphs.slice(1);
+
+const products = (await getCollection('products')).sort((a, b) => {
+  const pa = a.data.priority ?? 999;
+  const pb = b.data.priority ?? 999;
+  if (pa !== pb) return pa - pb;
+  const sa = a.data.period_start ?? '';
+  const sb = b.data.period_start ?? '';
+  return sb.localeCompare(sa);
+});
 
 const talks = (await getCollection('talks'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
@@ -45,12 +56,11 @@ const personJsonLd = {
     <p class="kana">Hatano Takuma</p>
     <h1>{profile.name_ja}</h1>
     <p class="tagline">{profile.tagline}</p>
-  </section>
 
-  <section class="bio">
-    {paragraphs.map((p) => <p>{p}</p>)}
+    {lede && <p class="lede">{lede}</p>}
+
     {profile.links.length > 0 && (
-      <ul class="links">
+      <ul class="hero-links">
         {profile.links.map((l) => (
           <li>
             <ExternalLink href={l.url}>{l.label}</ExternalLink>
@@ -60,9 +70,48 @@ const personJsonLd = {
     )}
   </section>
 
-  <hr />
+  <section class="section products" id="products" aria-labelledby="products-heading">
+    <h2 id="products-heading">プロダクト・開発したもの</h2>
+    {products.length === 0 ? (
+      <p class="empty">プロダクト情報はまだありません。</p>
+    ) : (
+      <ul class="product-list">
+        {products.map((p) => {
+          const period = p.data.period_start
+            ? `${formatYearMonth(p.data.period_start)}${p.data.period_end ? `〜${formatYearMonth(p.data.period_end)}` : ''}`
+            : '';
+          return (
+            <li class="product">
+              <header class="product-head">
+                <h3 class="product-name">{p.data.name}</h3>
+                {(p.data.role || period) && (
+                  <p class="product-meta">
+                    {p.data.role && <span>{p.data.role}</span>}
+                    {period && <span class="product-period">{period}</span>}
+                  </p>
+                )}
+              </header>
+              <p class="product-tagline">{p.data.tagline}</p>
+              {p.data.tech && p.data.tech.length > 0 && (
+                <ul class="product-tech" aria-label="使用技術">
+                  {p.data.tech.map((t) => <li>{t}</li>)}
+                </ul>
+              )}
+              {p.data.links && p.data.links.length > 0 && (
+                <ul class="product-links">
+                  {p.data.links.map((l) => (
+                    <li><ExternalLink href={l.url}>{l.label}</ExternalLink></li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
 
-  <section class="preview" aria-labelledby="preview-talks">
+  <section class="section preview" aria-labelledby="preview-talks">
     <h2 id="preview-talks">直近の発表</h2>
     {talks.length === 0 ? (
       <p class="empty">まだ登壇情報はありません。</p>
@@ -81,7 +130,7 @@ const personJsonLd = {
     <p class="more"><a href={url('/talks/')}>すべての発表を見る →</a></p>
   </section>
 
-  <section class="preview" aria-labelledby="preview-pubs">
+  <section class="section preview" aria-labelledby="preview-pubs">
     <h2 id="preview-pubs">直近の論文・寄稿</h2>
     {publications.length === 0 ? (
       <p class="empty">まだ論文・寄稿はありません。</p>
@@ -100,7 +149,7 @@ const personJsonLd = {
     <p class="more"><a href={url('/publications/')}>すべての論文・寄稿を見る →</a></p>
   </section>
 
-  <section class="preview" aria-labelledby="preview-career">
+  <section class="section preview" aria-labelledby="preview-career">
     <h2 id="preview-career">経歴</h2>
     <ul class="rows">
       {careerEntries.map((c) => (
@@ -114,52 +163,134 @@ const personJsonLd = {
     </ul>
     <p class="more"><a href={url('/career/')}>すべての経歴を見る →</a></p>
   </section>
+
+  {restBio.length > 0 && (
+    <section class="section bio-rest" aria-labelledby="bio-rest-heading">
+      <h2 id="bio-rest-heading">もう少し詳しく</h2>
+      {restBio.map((p) => <p>{p}</p>)}
+    </section>
+  )}
 </BaseLayout>
 
 <style>
   .hero {
-    padding-block: var(--space-8) var(--space-6);
-    border-bottom: 1px solid var(--c-rule);
+    padding-block: var(--space-5) var(--space-6);
   }
   .kana {
     color: var(--c-text-muted);
     font-size: 0.78rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
   }
   .hero h1 {
-    font-size: clamp(2.4rem, 1.6rem + 3.5vw, 4rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.85rem, 1.4rem + 1.6vw, 2.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
     font-weight: 600;
   }
   .tagline {
+    margin-top: var(--space-2);
+    color: var(--c-text);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    max-width: var(--measure-prose);
+  }
+  .lede {
     margin-top: var(--space-4);
-    color: var(--c-text-muted);
-    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
     max-width: var(--measure-prose);
   }
-  .bio {
-    padding-block: var(--space-7);
-    max-width: var(--measure-prose);
-  }
-  .bio .links {
+  .hero-links {
     list-style: none;
-    margin-top: var(--space-5);
+    margin-top: var(--space-4);
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3) var(--space-5);
+    font-size: 0.92rem;
   }
 
-  .preview {
-    padding-block: var(--space-7);
+  .section {
+    padding-block: var(--space-6);
     border-top: 1px solid var(--c-rule);
   }
-  .preview h2 {
+  .section h2 {
+    font-size: 1.15rem;
     margin-bottom: var(--space-4);
+    letter-spacing: 0.02em;
   }
-  ul.rows {
+
+  /* Products */
+  .product-list {
+    list-style: none;
+  }
+  .product {
+    padding-block: var(--space-4);
+    border-bottom: 1px dashed var(--c-rule);
+  }
+  .product:first-child {
+    padding-top: 0;
+  }
+  .product:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .product-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+  }
+  .product-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .product-meta {
+    font-size: 0.82rem;
+    color: var(--c-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .product-meta span + span::before {
+    content: '·';
+    margin-inline-end: var(--space-3);
+    color: var(--c-rule-strong);
+  }
+  .product-period {
+    font-variant-numeric: tabular-nums;
+  }
+  .product-tagline {
+    margin-top: var(--space-2);
+    color: var(--c-text);
+    max-width: var(--measure-prose);
+  }
+  .product-tech {
+    list-style: none;
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .product-tech li {
+    font-size: 0.72rem;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule);
+    border-radius: 4px;
+    padding: 0.05rem 0.5rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+  .product-links {
+    list-style: none;
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    font-size: 0.92rem;
+  }
+
+  /* Preview sections (talks/pubs/career) */
+  .rows {
     list-style: none;
   }
   .row-title {
@@ -180,11 +311,23 @@ const personJsonLd = {
     margin-top: var(--space-1);
   }
   .more {
-    margin-top: var(--space-5);
+    margin-top: var(--space-4);
     color: var(--c-text-muted);
+    font-size: 0.92rem;
   }
   .empty {
     color: var(--c-text-muted);
     padding-block: var(--space-3);
+  }
+
+  /* Bio rest */
+  .bio-rest {
+    color: var(--c-text);
+  }
+  .bio-rest p {
+    max-width: var(--measure-prose);
+  }
+  .bio-rest p + p {
+    margin-top: 1em;
   }
 </style>

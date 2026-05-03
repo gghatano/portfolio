@@ -35,6 +35,7 @@ pnpm check    # astro check（typecheck）
 | `talks` | Markdown（frontmatter + 本文） | `src/content/talks/<slug>.md` |
 | `publications` | Markdown（frontmatter + 本文） | `src/content/publications/<slug>.md` |
 | `affiliations` | JSON（複数） | `src/content/affiliations/<slug>.json` |
+| `products` | JSON（複数 / トップに常時表示） | `src/content/products/<slug>.json` |
 
 スキーマ定義は [`src/content/config.ts`](src/content/config.ts)。各フィールドの型・必須／任意・enum 値はそこで一元管理しているので、項目を増やすときも先にスキーマを編集する。
 

@@ -1,0 +1,13 @@
+{
+  "name": "プロダクト名",
+  "tagline": "1〜2 行で何をやったか説明する。トップページに常時表示される。",
+  "period_start": "YYYY-MM",
+  "period_end": "present",
+  "role": "個人開発 / 主導 / OSS contributor など",
+  "tech": ["TypeScript", "Astro"],
+  "links": [
+    { "label": "Repo", "url": "https://github.com/example/foo" },
+    { "label": "Live", "url": "https://example.com" }
+  ],
+  "priority": 10
+}
