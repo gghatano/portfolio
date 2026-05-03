@@ -12,6 +12,8 @@
   - [task-001 全ページ実装](phase-02/task-001-pages.md)
 - Phase 5: 仕上げ
   - [task-001 6 ペルソナ自己レビュー → 修正](phase-05/task-001-self-review-and-fixes.md)
+- Phase 6: 公開
+  - [task-001 GitHub Pages デプロイワークフロー](phase-06/task-001-pages-deploy.md)
 
 ## 運用ルール
 

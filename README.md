@@ -117,13 +117,26 @@ CSS Variables で `:root` / `:root[data-theme='light'|'dark']` の 2 経路を�
 
 ## デプロイ
 
-公開先（ユーザーサイト or プロジェクトサイト）と独自ドメインは未確定。実装は両形態で壊れないよう、内部リンクをすべて `import.meta.env.BASE_URL` 経由 (`src/lib/url.ts`) で組み立てている。
+公開先は **プロジェクトサイト** `https://gghatano.github.io/portfolio/`。`main` への push をトリガに [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) が GitHub Pages へ自動デプロイする。
 
-公開先決定後の手順:
+ワークフローの流れ:
 
-1. `astro.config.mjs` の `site` / `base` を環境変数（`SITE_URL` / `SITE_BASE`）で渡せるようになっている。プロジェクトサイトなら `SITE_BASE=/<repo>/` を CI で渡す。
-2. GitHub Actions ワークフロー（`actions/deploy-pages`）を `.github/workflows/deploy.yml` に用意。**未作成**。
-3. `public/og/default.png` を生成して OG 画像を配置。**未作成**。
+1. pnpm install → `pnpm lint` / `pnpm exec astro check` / `pnpm build`
+2. `SITE_URL=https://gghatano.github.io` / `SITE_BASE=/portfolio/` を env で渡す
+3. `actions/upload-pages-artifact` で `dist/` を artifact 化
+4. `actions/deploy-pages` で公開
+
+### 初回セットアップ（リポジトリ管理者の作業）
+
+GitHub の **Settings → Pages → Build and deployment** で **Source** を `GitHub Actions` に設定する。`actions/configure-pages@v5` が自動で有効化を試みるが、組織権限などで失敗するケースは手動で。
+
+### 別構成への切替
+
+ユーザーサイト (`<owner>.github.io`) や独自ドメインに切り替える場合は、`.github/workflows/deploy.yml` の `SITE_URL` / `SITE_BASE` を変更する。内部リンクはすべて `import.meta.env.BASE_URL` 経由 (`src/lib/url.ts`) で組み立てているため、env 値の差し替えだけで両形態に対応できる。
+
+### TODO
+
+- `public/og/default.png`（1200×630）を生成して OG 画像を配置。**未作成**。
 
 ## 開発上の補足
 
@@ -135,7 +148,6 @@ CSS Variables で `:root` / `:root[data-theme='light'|'dark']` の 2 経路を�
 
 - WOFF2 self-host fonts（`public/fonts/`）
 - `public/og/default.png` 生成
-- GitHub Actions deploy ワークフロー
 - Lighthouse CI / pa11y CI
 - アバター画像（要件 6.2 「個人らしさ 1 つ」）
 - 連絡先の実アドレス・SNS リンクの差し替え
