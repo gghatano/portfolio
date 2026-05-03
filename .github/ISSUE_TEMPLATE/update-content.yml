@@ -1,0 +1,31 @@
+name: 既存コンテンツを更新
+description: 既存のコンテンツファイル（経歴・発表・論文・所属）を更新したい場合
+title: "[update] "
+labels: ["content", "content:update"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        既存コンテンツの修正・追記用。
+        Issue 作成後、ローカルで `/update-content <slug or path> #<this issue>` を実行。
+
+  - type: input
+    id: target
+    attributes:
+      label: 対象 slug またはパス
+      description: |
+        例: `2025-jsconf-jp` / `src/content/talks/2025-jsconf-jp.md`
+      placeholder: 2025-jsconf-jp
+    validations:
+      required: true
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: 変更内容
+      description: 変更したいフィールドと新しい値、または追記したい本文。
+      placeholder: |
+        - video_url を https://... に追加
+        - abstract に「2 段落目を追加」
+    validations:
+      required: true

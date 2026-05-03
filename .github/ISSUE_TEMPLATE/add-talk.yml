@@ -1,0 +1,86 @@
+name: 発表を追加
+description: 登壇・講演を追加するためのテンプレート
+title: "[talk] "
+labels: ["content", "content:talk"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        発表 (talk) エントリを追加します。
+        Issue を作成したあと、ローカルで `/from-issue <#>` または `/add-talk <#>` を実行するとコンテンツファイルが生成されます。
+        フォーマットの詳細は [`docs/templates/talk.md.template`](../../docs/templates/talk.md.template) を参照。
+
+  - type: input
+    id: date
+    attributes:
+      label: 日付 (YYYY-MM-DD)
+      placeholder: 2026-04-01
+    validations:
+      required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: 発表タイトル
+    validations:
+      required: true
+
+  - type: input
+    id: event
+    attributes:
+      label: イベント / 会議名
+      placeholder: 例 JSConf JP 2026
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: 場所（任意）
+      placeholder: 東京 / Berlin / オンライン
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 種別
+      options:
+        - keynote
+        - invited
+        - oral
+        - poster
+        - lt
+        - panel
+      default: 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: 言語
+      options:
+        - ja
+        - en
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: slides_url
+    attributes:
+      label: スライド URL（任意）
+      placeholder: https://example.com/slides/...
+
+  - type: input
+    id: video_url
+    attributes:
+      label: 動画 URL（任意）
+      placeholder: https://example.com/videos/...
+
+  - type: textarea
+    id: abstract
+    attributes:
+      label: アブストラクト / 内容メモ
+      description: 詳細ページの「概要」として表示される本文。Markdown 可。
+    validations:
+      required: true

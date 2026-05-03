@@ -1,0 +1,50 @@
+name: 所属・コミュニティを追加
+description: 学会・コミュニティ・団体への所属を追加するためのテンプレート
+title: "[affiliation] "
+labels: ["content", "content:affiliation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        所属 (affiliation) エントリを追加します。
+        Issue 作成後、ローカルで `/from-issue <#>` または `/add-affiliation <#>` を実行してファイル生成。
+        フォーマットの詳細は [`docs/templates/affiliation.json.template`](../../docs/templates/affiliation.json.template)。
+
+  - type: input
+    id: period_start
+    attributes:
+      label: 開始 (YYYY-MM)
+      placeholder: 2023-04
+    validations:
+      required: true
+
+  - type: input
+    id: period_end
+    attributes:
+      label: 終了 (YYYY-MM または present)
+      value: present
+    validations:
+      required: true
+
+  - type: input
+    id: organization
+    attributes:
+      label: 組織名
+    validations:
+      required: true
+
+  - type: input
+    id: role
+    attributes:
+      label: 役割（任意）
+
+  - type: input
+    id: summary
+    attributes:
+      label: サマリー（任意）
+
+  - type: input
+    id: url
+    attributes:
+      label: 公式サイト URL（任意）
+      placeholder: https://example.com

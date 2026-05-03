@@ -1,0 +1,8 @@
+{
+  "period_start": "YYYY-MM",
+  "period_end": "present",
+  "organization": "組織名",
+  "role": "役割（任意）",
+  "summary": "サマリー（任意）",
+  "url": "https://example.com"
+}

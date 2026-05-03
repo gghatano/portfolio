@@ -38,6 +38,14 @@ pnpm check    # astro check（typecheck）
 
 スキーマ定義は [`src/content/config.ts`](src/content/config.ts)。各フィールドの型・必須／任意・enum 値はそこで一元管理しているので、項目を増やすときも先にスキーマを編集する。
 
+### 入口は 3 つ
+
+1. **GitHub Issue Form** — [Issues タブ → New issue](https://github.com/gghatano/portfolio/issues/new/choose) から該当テンプレートを選択。詳細は [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/)。
+2. **Claude Code スラッシュコマンド** — `/from-issue <#>` または `/add-talk <メモ>` などで Issue かメモから schema 準拠のファイルを自動生成。詳細は [`.claude/commands/README.md`](.claude/commands/README.md)。
+3. **手動コピー** — [`docs/templates/`](docs/templates/) の雛形をコピーして編集。
+
+入口が違っても、最終的に作られるファイルは同じ schema に従う。
+
 ### 発表 1 件を追加する例
 
 `src/content/talks/2026-conf-name.md` を作る:

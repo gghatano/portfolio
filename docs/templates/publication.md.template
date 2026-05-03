@@ -1,0 +1,23 @@
+---
+date: YYYY-MM-DD              # 必須 / 例 2026-03-15
+title: 論文タイトル              # 必須
+authors:                         # 必須 / 1 つ以上。自分は ** で囲む
+  - "**自分の名前**"
+  - 共著者 1
+  - 共著者 2
+venue: 学会名・誌名             # 必須
+type: conference                 # 必須 / journal | conference | book | chapter | preprint | magazine
+doi: 10.0000/example             # 任意
+pdf_url: https://example.com/paper.pdf       # 任意
+links:                           # 任意 / { label, url } 配列
+  - { label: "発表スライド", url: "https://example.com/slides/..." }
+bibtex: |                        # 任意 / 複数行 OK
+  @inproceedings{...,
+    author    = {...},
+    title     = {...},
+    booktitle = {...},
+    year      = {...}
+  }
+---
+
+アブストラクト本文。詳細ページの「概要」セクションに表示される。

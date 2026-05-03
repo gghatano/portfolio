@@ -1,0 +1,106 @@
+name: 論文・寄稿を追加
+description: 論文・寄稿エントリを追加するためのテンプレート
+title: "[publication] "
+labels: ["content", "content:publication"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        論文・寄稿 (publication) エントリを追加します。
+        Issue 作成後、ローカルで `/from-issue <#>` または `/add-publication <#>` を実行してファイル生成。
+        フォーマットの詳細は [`docs/templates/publication.md.template`](../../docs/templates/publication.md.template)。
+
+  - type: input
+    id: date
+    attributes:
+      label: 公開日 (YYYY-MM-DD)
+      placeholder: 2026-03-15
+    validations:
+      required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: タイトル
+    validations:
+      required: true
+
+  - type: textarea
+    id: authors
+    attributes:
+      label: 著者（1 行 1 名 / 自分は ** で囲む）
+      description: |
+        例:
+        ```
+        **畑野 拓馬**
+        山田 太郎
+        Sarah Kim
+        ```
+      placeholder: |
+        **自分の名前**
+        共著者 1
+        共著者 2
+    validations:
+      required: true
+
+  - type: input
+    id: venue
+    attributes:
+      label: 媒体（学会名・誌名・出版社など）
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 種別
+      options:
+        - journal
+        - conference
+        - book
+        - chapter
+        - preprint
+        - magazine
+    validations:
+      required: true
+
+  - type: input
+    id: doi
+    attributes:
+      label: DOI（任意）
+      placeholder: 10.0000/example
+
+  - type: input
+    id: pdf_url
+    attributes:
+      label: PDF URL（任意）
+      placeholder: https://example.com/paper.pdf
+
+  - type: textarea
+    id: links
+    attributes:
+      label: 関連リンク（任意 / 1 行 1 件）
+      description: |
+        `ラベル | URL` の形式。例:
+        ```
+        発表スライド | https://example.com/slides/...
+        プロジェクト | https://example.com/project
+        ```
+
+  - type: textarea
+    id: bibtex
+    attributes:
+      label: BibTeX（任意）
+      placeholder: |
+        @inproceedings{...,
+          author = {...},
+          ...
+        }
+      render: bibtex
+
+  - type: textarea
+    id: abstract
+    attributes:
+      label: アブストラクト
+    validations:
+      required: true

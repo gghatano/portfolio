@@ -1,0 +1,61 @@
+name: 経歴を追加
+description: 職歴・学歴・所属期間のエントリを追加するためのテンプレート
+title: "[career] "
+labels: ["content", "content:career"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        経歴 (career) エントリを追加します。
+        Issue 作成後、ローカルで `/from-issue <#>` または `/add-career <#>` を実行してファイル生成。
+        フォーマットの詳細は [`docs/templates/career.json.template`](../../docs/templates/career.json.template)。
+
+  - type: input
+    id: period_start
+    attributes:
+      label: 開始 (YYYY-MM)
+      placeholder: 2024-04
+    validations:
+      required: true
+
+  - type: input
+    id: period_end
+    attributes:
+      label: 終了 (YYYY-MM または present)
+      placeholder: present
+      value: present
+    validations:
+      required: true
+
+  - type: input
+    id: organization
+    attributes:
+      label: 組織名
+    validations:
+      required: true
+
+  - type: input
+    id: role
+    attributes:
+      label: 役割 / 役職
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: 場所（任意）
+      placeholder: 東京
+
+  - type: input
+    id: summary
+    attributes:
+      label: 1 行サマリー（任意）
+
+  - type: textarea
+    id: highlights
+    attributes:
+      label: 主な貢献 / ハイライト（任意 / 1 行 1 項目）
+      placeholder: |
+        モノレポ CI 高速化（30 分→7 分）
+        段階的リリース基盤の刷新

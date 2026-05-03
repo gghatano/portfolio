@@ -1,0 +1,12 @@
+---
+date: YYYY-MM-DD              # 必須 / 例 2026-04-01
+title: 発表タイトル              # 必須
+event: イベント名                # 必須
+location: 東京                   # 任意 / 例「東京」「Berlin」「オンライン」
+type: oral                       # 必須 / keynote | invited | oral | poster | lt | panel
+language: ja                     # 必須 / ja | en
+slides_url: https://example.com/slides/...   # 任意
+video_url: https://example.com/videos/...    # 任意
+---
+
+アブストラクト本文。詳細ページの「概要」セクションに表示される。Markdown 記法可。

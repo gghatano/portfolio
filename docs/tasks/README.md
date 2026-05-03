@@ -14,6 +14,7 @@
   - [task-001 6 ペルソナ自己レビュー → 修正](phase-05/task-001-self-review-and-fixes.md)
 - Phase 6: 公開
   - [task-001 GitHub Pages デプロイワークフロー](phase-06/task-001-pages-deploy.md)
+  - [task-002 コンテンツ追加テンプレート / スキル整備](phase-06/task-002-templates-skills.md)
 
 ## 運用ルール
 

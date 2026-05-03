@@ -1,0 +1,12 @@
+{
+  "period_start": "YYYY-MM",
+  "period_end": "present",
+  "organization": "組織名",
+  "role": "役割 / 役職",
+  "location": "東京",
+  "summary": "1 行サマリー（任意）",
+  "highlights": [
+    "主な貢献 1",
+    "主な貢献 2"
+  ]
+}
