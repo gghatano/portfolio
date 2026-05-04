@@ -6,5 +6,6 @@
   "role": "主導",
   "tech": ["TypeScript", "Turborepo", "GitHub Actions"],
   "links": [{ "label": "登壇 LT", "url": "https://example.com/slides/builderscon-lt" }],
-  "priority": 5
+  "priority": 5,
+  "icon": "速"
 }

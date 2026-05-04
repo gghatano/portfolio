@@ -92,8 +92,8 @@ const affiliations = defineCollection({
   }),
 });
 
-// プロダクト / 開発したもの。トップページに常時全件表示する想定なので、
-// priority で手動順位を付けられるようにしておく（priority 小→大、未指定は末尾）。
+// プロダクト / 開発したもの。トップページに 4 列グリッドで全件表示する想定。
+// 各セルはアイコン + 名前のみで、詳細は /products/<slug>/ で展開する。
 const products = defineCollection({
   type: 'data',
   schema: z.object({
@@ -105,6 +105,10 @@ const products = defineCollection({
     tech: z.array(z.string()).optional(),
     links: z.array(linkSchema).optional(),
     priority: z.number().int().optional(),
+    /** グリッドのアイコンに使う 1〜4 文字の文字列。省略時は name の先頭文字を使う。 */
+    icon: z.string().min(1).max(4).optional(),
+    /** 詳細ページに表示する追加の説明（任意、Markdown 段落区切り） */
+    description_md: z.string().optional(),
   }),
 });
 

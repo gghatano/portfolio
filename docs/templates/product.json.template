@@ -1,6 +1,6 @@
 {
   "name": "プロダクト名",
-  "tagline": "1〜2 行で何をやったか説明する。トップページに常時表示される。",
+  "tagline": "1〜2 行の短い説明。詳細ページに表示される（トップのグリッドセルにはアイコンと名前のみ表示）。",
   "period_start": "YYYY-MM",
   "period_end": "present",
   "role": "個人開発 / 主導 / OSS contributor など",
@@ -9,5 +9,7 @@
     { "label": "Repo", "url": "https://github.com/example/foo" },
     { "label": "Live", "url": "https://example.com" }
   ],
-  "priority": 10
+  "priority": 10,
+  "icon": "畑",
+  "description_md": "詳細ページの本文として表示される。\n\n空行で段落区切り。Markdown は段落のみ対応。"
 }

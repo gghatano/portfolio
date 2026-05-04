@@ -9,5 +9,7 @@
     { "label": "Repo", "url": "https://github.com/gghatano/portfolio" },
     { "label": "Live", "url": "https://gghatano.github.io/portfolio/" }
   ],
-  "priority": 1
+  "priority": 1,
+  "icon": "畑",
+  "description_md": "GitHub Pages 上に立てた自己紹介・取り組みまとめサイト。Astro + Content Collections + Zod でコンテンツの型を厳格化し、レビュー観点ペルソナによるセルフレビューを通したうえで公開している。\n\nテンプレ的な「Claude Code 風」の見た目を意識的に避け、編集デザイン的な情報設計（タイポと余白）と朱色 1 色のアクセントで構成。コンテンツ追加は GitHub Issue Form 経由でも、Claude Code のスラッシュコマンド経由でも、雛形コピーでも行える 3 経路を持つ。"
 }

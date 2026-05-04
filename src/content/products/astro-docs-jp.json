@@ -6,5 +6,6 @@
   "role": "OSS contributor",
   "tech": ["Markdown", "Astro"],
   "links": [{ "label": "ドキュメント", "url": "https://docs.astro.build/ja/" }],
-  "priority": 6
+  "priority": 6,
+  "icon": "訳"
 }

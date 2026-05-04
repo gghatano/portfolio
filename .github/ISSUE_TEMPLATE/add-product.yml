@@ -21,9 +21,22 @@ body:
     id: tagline
     attributes:
       label: 1〜2 行説明
-      description: トップページの一覧で本文として表示される。
+      description: 詳細ページに表示される短い説明。トップのグリッドセルには表示されない（セルはアイコン + 名前のみ）。
     validations:
       required: true
+
+  - type: input
+    id: icon
+    attributes:
+      label: アイコン文字（1〜4 文字、任意）
+      description: トップのグリッドセルに表示される 1 文字。漢字推奨（例「畑」「観」「型」）。省略時は名称の先頭文字。
+      placeholder: 畑
+
+  - type: textarea
+    id: description_md
+    attributes:
+      label: 詳細説明（任意）
+      description: 詳細ページの「概要」として表示される。Markdown 段落区切り（空行で段落分け）可。
 
   - type: input
     id: period_start

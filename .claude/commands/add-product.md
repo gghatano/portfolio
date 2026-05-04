@@ -20,13 +20,15 @@ allowed-tools: Bash, Read, Write
 | フィールド | 必須 | 値 |
 | --- | --- | --- |
 | name | ✓ | プロダクト名 |
-| tagline | ✓ | 1〜2 行説明（トップページに表示） |
+| tagline | ✓ | 1〜2 行の短い説明（詳細ページのサブタイトルに使用） |
 | period_start |  | YYYY-MM |
 | period_end |  | YYYY-MM または `"present"` |
 | role |  | 役割（個人開発 / 主導 / OSS contributor など） |
 | tech |  | 主要技術の文字列配列 |
 | links |  | `{ label, url }` 配列 |
 | priority |  | 整数（小さいほど先頭） |
+| icon |  | グリッドセル用 1〜4 文字（漢字 1 文字推奨） |
+| description_md |  | 詳細ページの本文（Markdown 段落区切り） |
 
 ## 手順
 
@@ -47,7 +49,8 @@ allowed-tools: Bash, Read, Write
 
 ## 注意
 
-- トップページに常時表示されるため、tagline は内容を 1〜2 文で表現する（長い場合は短くする提案を）。
+- ホームのグリッドはアイコン + 名前のみ。tagline と description_md は詳細ページ (/products/<slug>/) で表示される。
+- icon が未指定の場合は `defaultProductIcon` が name の先頭文字を使う。日本語名なら漢字 1 文字、英名なら 1 文字目（例 typed-content → "t" → 詰まるので明示的に "型" などを推奨）。
 - `tech` は実プロダクトで実際に使ったものに絞る。盛らない。
 - 機密情報（顧客名・社内コードネーム）は含めない。社外に出せる粒度に。
 - worktree で作業すること（CLAUDE.md ルール）。

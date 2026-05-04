@@ -5,6 +5,7 @@ import ExternalLink from '~/components/lists/ExternalLink.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatDate, formatYearMonth } from '~/lib/format';
 import { publicationTypeLabel, talkTypeLabel } from '~/lib/labels';
+import { defaultProductIcon } from '~/lib/products';
 import { url } from '~/lib/url';
 
 const profileEntry = await getEntry('profile', 'main');
@@ -75,35 +76,15 @@ const personJsonLd = {
     {products.length === 0 ? (
       <p class="empty">プロダクト情報はまだありません。</p>
     ) : (
-      <ul class="product-list">
+      <ul class="product-grid">
         {products.map((p) => {
-          const period = p.data.period_start
-            ? `${formatYearMonth(p.data.period_start)}${p.data.period_end ? `〜${formatYearMonth(p.data.period_end)}` : ''}`
-            : '';
+          const iconChar = p.data.icon ?? defaultProductIcon(p.data.name);
           return (
-            <li class="product">
-              <header class="product-head">
-                <h3 class="product-name">{p.data.name}</h3>
-                {(p.data.role || period) && (
-                  <p class="product-meta">
-                    {p.data.role && <span>{p.data.role}</span>}
-                    {period && <span class="product-period">{period}</span>}
-                  </p>
-                )}
-              </header>
-              <p class="product-tagline">{p.data.tagline}</p>
-              {p.data.tech && p.data.tech.length > 0 && (
-                <ul class="product-tech" aria-label="使用技術">
-                  {p.data.tech.map((t) => <li>{t}</li>)}
-                </ul>
-              )}
-              {p.data.links && p.data.links.length > 0 && (
-                <ul class="product-links">
-                  {p.data.links.map((l) => (
-                    <li><ExternalLink href={l.url}>{l.label}</ExternalLink></li>
-                  ))}
-                </ul>
-              )}
+            <li class="product-cell-wrap">
+              <a href={url(`/products/${p.id}/`)} class="product-cell">
+                <span class="product-icon" aria-hidden="true">{iconChar}</span>
+                <span class="product-name">{p.data.name}</span>
+              </a>
             </li>
           );
         })}
@@ -218,75 +199,73 @@ const personJsonLd = {
     letter-spacing: 0.02em;
   }
 
-  /* Products */
-  .product-list {
+  /* Products grid: 4 列 desktop / 2 列 tablet / 1 列 mobile。
+     セルごとに細い罫線を持たせ、最終行が埋まらない場合に空白が広がらないようにする。 */
+  .product-grid {
     list-style: none;
-  }
-  .product {
-    padding-block: var(--space-4);
-    border-bottom: 1px dashed var(--c-rule);
-  }
-  .product:first-child {
-    padding-top: 0;
-  }
-  .product:last-child {
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-  .product-head {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-  }
-  .product-name {
-    font-size: 1.05rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-  .product-meta {
-    font-size: 0.82rem;
-    color: var(--c-text-muted);
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-3);
   }
-  .product-meta span + span::before {
-    content: '·';
-    margin-inline-end: var(--space-3);
-    color: var(--c-rule-strong);
+  .product-cell-wrap {
+    /* 行が浮かないように li 自体は装飾しない */
   }
-  .product-period {
-    font-variant-numeric: tabular-nums;
-  }
-  .product-tagline {
-    margin-top: var(--space-2);
-    color: var(--c-text);
-    max-width: var(--measure-prose);
-  }
-  .product-tech {
-    list-style: none;
-    margin-top: var(--space-3);
+  .product-cell {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-  .product-tech li {
-    font-size: 0.72rem;
-    color: var(--c-text-muted);
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    min-height: 9rem;
     border: 1px solid var(--c-rule);
     border-radius: 4px;
-    padding: 0.05rem 0.5rem;
-    line-height: 1.6;
-    letter-spacing: 0.04em;
+    transition:
+      background var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick);
   }
-  .product-links {
-    list-style: none;
-    margin-top: var(--space-3);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
-    font-size: 0.92rem;
+  .product-cell:hover {
+    background: var(--c-bg-elev);
+    border-color: var(--c-rule-strong);
+  }
+  .product-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--c-rule-strong);
+    border-radius: 4px;
+    font-size: 1.35rem;
+    font-weight: 500;
+    font-family: var(--font-serif);
+    color: var(--c-accent);
+    flex-shrink: 0;
+  }
+  .product-name {
+    display: inline-block;
+    align-self: flex-start;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--c-text);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-quick) var(--easing-quick);
+  }
+  .product-cell:hover .product-name {
+    border-bottom-color: var(--c-accent);
+  }
+
+  @media (max-width: 900px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Preview sections (talks/pubs/career) */
