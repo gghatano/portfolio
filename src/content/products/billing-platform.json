@@ -6,5 +6,5 @@
   "role": "テックリード",
   "tech": ["TypeScript", "Go", "AWS", "Terraform"],
   "priority": 4,
-  "icon": "請"
+  "icon": "billing"
 }

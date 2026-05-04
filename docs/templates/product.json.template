@@ -10,6 +10,6 @@
     { "label": "Live", "url": "https://example.com" }
   ],
   "priority": 10,
-  "icon": "畑",
+  "icon": "site",
   "description_md": "詳細ページの本文として表示される。\n\n空行で段落区切り。Markdown は段落のみ対応。"
 }

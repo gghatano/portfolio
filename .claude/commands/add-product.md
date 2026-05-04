@@ -27,7 +27,7 @@ allowed-tools: Bash, Read, Write
 | tech |  | 主要技術の文字列配列 |
 | links |  | `{ label, url }` 配列 |
 | priority |  | 整数（小さいほど先頭） |
-| icon |  | グリッドセル用 1〜4 文字（漢字 1 文字推奨） |
+| icon |  | ピクトグラム名 (`site` 等) または 1〜4 文字 |
 | description_md |  | 詳細ページの本文（Markdown 段落区切り） |
 
 ## 手順
@@ -50,7 +50,11 @@ allowed-tools: Bash, Read, Write
 ## 注意
 
 - ホームのグリッドはアイコン + 名前のみ。tagline と description_md は詳細ページ (/products/<slug>/) で表示される。
-- icon が未指定の場合は `defaultProductIcon` が name の先頭文字を使う。日本語名なら漢字 1 文字、英名なら 1 文字目（例 typed-content → "t" → 詰まるので明示的に "型" などを推奨）。
+- icon フィールドは次のいずれか:
+  - **ピクトグラム名**（推奨）: `site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss` のいずれか → SVG として描画される。プロダクトの性質に合うものを選ぶ
+  - **1〜4 文字の任意の文字**: 漢字 1 文字推奨（例 "型"）。フレーム内に文字として描画される
+  - 省略すると name の先頭文字が使われる（typed-content → "t"。英字名は明示推奨）
+- 新しいピクトグラム名を追加したい場合は `src/components/icons/ProductIcon.astro` の `KNOWN_PICTOGRAMS` セットと `<svg>` 内 conditional に SVG を追加する必要がある（schema 変更ではない）。
 - `tech` は実プロダクトで実際に使ったものに絞る。盛らない。
 - 機密情報（顧客名・社内コードネーム）は含めない。社外に出せる粒度に。
 - worktree で作業すること（CLAUDE.md ルール）。

@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
+import ProductIcon from '~/components/icons/ProductIcon.astro';
 import EntryRow from '~/components/lists/EntryRow.astro';
 import ExternalLink from '~/components/lists/ExternalLink.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
@@ -77,17 +78,16 @@ const personJsonLd = {
       <p class="empty">プロダクト情報はまだありません。</p>
     ) : (
       <ul class="product-grid">
-        {products.map((p) => {
-          const iconChar = p.data.icon ?? defaultProductIcon(p.data.name);
-          return (
-            <li class="product-cell-wrap">
-              <a href={url(`/products/${p.id}/`)} class="product-cell">
-                <span class="product-icon" aria-hidden="true">{iconChar}</span>
-                <span class="product-name">{p.data.name}</span>
-              </a>
-            </li>
-          );
-        })}
+        {products.map((p) => (
+          <li class="product-cell-wrap">
+            <a href={url(`/products/${p.id}/`)} class="product-cell">
+              <span class="product-icon" aria-hidden="true">
+                <ProductIcon icon={p.data.icon} fallback={defaultProductIcon(p.data.name)} />
+              </span>
+              <span class="product-name">{p.data.name}</span>
+            </a>
+          </li>
+        ))}
       </ul>
     )}
   </section>
@@ -239,9 +239,12 @@ const personJsonLd = {
     border-radius: 4px;
     font-size: 1.35rem;
     font-weight: 500;
-    font-family: var(--font-serif);
     color: var(--c-accent);
     flex-shrink: 0;
+  }
+  .product-icon :global(svg.pictogram) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
   .product-name {
     display: inline-block;

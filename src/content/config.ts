@@ -105,8 +105,13 @@ const products = defineCollection({
     tech: z.array(z.string()).optional(),
     links: z.array(linkSchema).optional(),
     priority: z.number().int().optional(),
-    /** グリッドのアイコンに使う 1〜4 文字の文字列。省略時は name の先頭文字を使う。 */
-    icon: z.string().min(1).max(4).optional(),
+    /**
+     * グリッドのアイコンに使う識別子。
+     * - ピクトグラム名 (`site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss`) → SVG として描画
+     * - それ以外の 1〜4 文字 → 文字としてフレーム内に描画
+     * - 省略時は name の先頭文字を文字として描画
+     */
+    icon: z.string().min(1).max(16).optional(),
     /** 詳細ページに表示する追加の説明（任意、Markdown 段落区切り） */
     description_md: z.string().optional(),
   }),

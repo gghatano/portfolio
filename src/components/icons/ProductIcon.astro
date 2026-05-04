@@ -1,0 +1,110 @@
+---
+/**
+ * プロダクトアイコン。`icon` がピクトグラム名 (`site`, `review` など) なら SVG を、
+ * そうでなければ 1〜2 文字のテキストとしてレンダリングする後方互換あり。
+ *
+ * SVG のサイズは consumer 側の `.product-icon svg` / `.icon svg` セレクタで指定する。
+ * 共通スタイル (stroke 色) は currentColor を使うので、フレームの color を継承する。
+ */
+interface Props {
+  icon?: string;
+  fallback?: string;
+}
+const { icon, fallback } = Astro.props;
+
+const KNOWN_PICTOGRAMS = new Set([
+  'site',
+  'review',
+  'type',
+  'billing',
+  'speed',
+  'translate',
+  'book',
+  'oss',
+]);
+
+const isPictogram = icon !== undefined && KNOWN_PICTOGRAMS.has(icon);
+const char = isPictogram ? null : (icon ?? fallback ?? '?');
+---
+
+{isPictogram ? (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    class="pictogram"
+  >
+    {icon === 'site' && (
+      <Fragment>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 9h18" />
+        <circle cx="6.5" cy="7" r="0.7" fill="currentColor" stroke="none" />
+        <circle cx="9" cy="7" r="0.7" fill="currentColor" stroke="none" />
+        <circle cx="11.5" cy="7" r="0.7" fill="currentColor" stroke="none" />
+      </Fragment>
+    )}
+    {icon === 'review' && (
+      <Fragment>
+        <circle cx="10" cy="10" r="5.5" />
+        <line x1="14.5" y1="14.5" x2="20" y2="20" />
+      </Fragment>
+    )}
+    {icon === 'type' && (
+      <Fragment>
+        <polyline points="9 6 3 12 9 18" />
+        <polyline points="15 6 21 12 15 18" />
+      </Fragment>
+    )}
+    {icon === 'billing' && (
+      <Fragment>
+        <path d="M4 20V4" />
+        <path d="M4 20h16" />
+        <rect x="7" y="13" width="2.5" height="7" />
+        <rect x="11" y="9" width="2.5" height="11" />
+        <rect x="15" y="5" width="2.5" height="15" />
+      </Fragment>
+    )}
+    {icon === 'speed' && (
+      <path d="M13 2 L4 14 L11 14 L11 22 L20 10 L13 10 Z" />
+    )}
+    {icon === 'translate' && (
+      <Fragment>
+        <circle cx="12" cy="12" r="8" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <ellipse cx="12" cy="12" rx="4" ry="8" />
+      </Fragment>
+    )}
+    {icon === 'book' && (
+      <Fragment>
+        <path d="M4 5v14l8-3 8 3V5l-8 3-8-3z" />
+        <path d="M12 8v11" />
+      </Fragment>
+    )}
+    {icon === 'oss' && (
+      <Fragment>
+        <circle cx="6" cy="6" r="2" />
+        <circle cx="6" cy="18" r="2" />
+        <circle cx="18" cy="12" r="2" />
+        <path d="M6 8v8" />
+        <path d="M8 6c4 0 6 4 8 5" />
+      </Fragment>
+    )}
+  </svg>
+) : (
+  <span class="pictogram-char">{char}</span>
+)}
+
+<style>
+  .pictogram {
+    display: inline-block;
+    /* サイズは consumer (.product-icon / .icon) 側で指定 */
+  }
+  .pictogram-char {
+    font-family: var(--font-serif);
+    line-height: 1;
+  }
+</style>

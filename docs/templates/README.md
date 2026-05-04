@@ -14,6 +14,17 @@
 
 profile (`src/content/profile/main.json`) は singleton なので雛形は持たない。直接編集する。
 
+## products の `icon` フィールド
+
+トップのグリッドセルに描画されるアイコン。次のいずれか:
+
+- **ピクトグラム名**（推奨）: SVG が描画される
+  - `site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss`
+- **1〜4 文字の任意の文字**: フレーム内に文字として描画される（漢字 1 文字推奨。例 `"畑"`）
+- **省略**: name の先頭文字が文字として描画される
+
+新しいピクトグラムを追加したい場合は [`src/components/icons/ProductIcon.astro`](../../src/components/icons/ProductIcon.astro) の `KNOWN_PICTOGRAMS` セットと `<svg>` 内 conditional に追加する。
+
 ## slug 命名
 
 `<YYYY>-<イベントや組織の略称>` の kebab-case を基本とする。同年に同イベント名で複数ある場合は末尾にキーワードを足す（`-lt`、`-keynote`、`-poster` など）。

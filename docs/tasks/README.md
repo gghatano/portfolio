@@ -17,6 +17,7 @@
   - [task-002 コンテンツ追加テンプレート / スキル整備](phase-06/task-002-templates-skills.md)
   - [task-003 home redesign + products コレクション](phase-06/task-003-home-products.md)
   - [task-004 products grid + 詳細ページ](phase-06/task-004-products-grid.md)
+  - [task-005 products アイコンをピクトグラム化](phase-06/task-005-pictograms.md)
 
 ## 運用ルール
 

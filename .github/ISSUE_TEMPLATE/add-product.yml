@@ -28,9 +28,13 @@ body:
   - type: input
     id: icon
     attributes:
-      label: アイコン文字（1〜4 文字、任意）
-      description: トップのグリッドセルに表示される 1 文字。漢字推奨（例「畑」「観」「型」）。省略時は名称の先頭文字。
-      placeholder: 畑
+      label: アイコン（任意）
+      description: |
+        次のいずれか:
+        - ピクトグラム名: `site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss`
+        - それ以外の 1〜4 文字（漢字 1 文字推奨）
+        - 省略すると名称の先頭文字を使う
+      placeholder: site
 
   - type: textarea
     id: description_md

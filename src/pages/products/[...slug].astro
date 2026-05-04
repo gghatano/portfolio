@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
+import ProductIcon from '~/components/icons/ProductIcon.astro';
 import ExternalLink from '~/components/lists/ExternalLink.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatYearMonth } from '~/lib/format';
@@ -19,7 +20,6 @@ const d = item.data;
 const period = d.period_start
   ? `${formatYearMonth(d.period_start)}${d.period_end ? `〜${formatYearMonth(d.period_end)}` : ''}`
   : '';
-const iconChar = d.icon ?? defaultProductIcon(d.name);
 const descParagraphs = d.description_md ? d.description_md.split(/\n\n+/u) : [];
 
 const productJsonLd: Record<string, unknown> = {
@@ -50,7 +50,9 @@ if (d.role) productJsonLd.creator = { '@type': 'Person', name: '畑野 拓馬', 
 
   <article class="detail">
     <header class="head">
-      <span class="icon" aria-hidden="true">{iconChar}</span>
+      <span class="icon" aria-hidden="true">
+        <ProductIcon icon={d.icon} fallback={defaultProductIcon(d.name)} />
+      </span>
       <div class="head-text">
         <h1>{d.name}</h1>
         {(d.role || period) && (
@@ -126,9 +128,12 @@ if (d.role) productJsonLd.creator = { '@type': 'Person', name: '畑野 拓馬', 
     border-radius: 6px;
     font-size: 2rem;
     font-weight: 500;
-    font-family: var(--font-serif);
     color: var(--c-accent);
     flex-shrink: 0;
+  }
+  .icon :global(svg.pictogram) {
+    width: 2.25rem;
+    height: 2.25rem;
   }
   .head-text h1 {
     font-size: clamp(1.4rem, 1.2rem + 1vw, 1.85rem);
@@ -206,6 +211,10 @@ if (d.role) productJsonLd.creator = { '@type': 'Person', name: '畑野 拓馬', 
       width: 3.25rem;
       height: 3.25rem;
       font-size: 1.6rem;
+    }
+    .icon :global(svg.pictogram) {
+      width: 1.85rem;
+      height: 1.85rem;
     }
   }
 </style>

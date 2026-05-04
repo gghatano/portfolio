@@ -7,5 +7,5 @@
   "tech": ["TypeScript", "Zod"],
   "links": [{ "label": "Repo", "url": "https://github.com/example/typed-content" }],
   "priority": 3,
-  "icon": "型"
+  "icon": "type"
 }

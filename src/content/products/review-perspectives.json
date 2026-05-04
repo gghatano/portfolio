@@ -7,6 +7,6 @@
   "tech": ["TypeScript", "Node.js", "GitHub Actions", "PostgreSQL"],
   "links": [{ "label": "発表", "url": "https://example.com/slides/devopscon-2024" }],
   "priority": 2,
-  "icon": "観",
+  "icon": "review",
   "description_md": "社内のレビュー文化改善のために立ち上げた取り組み。観点ドキュメントを Markdown + JSON Schema で構造化し、PR ごとに該当観点を自動展開して埋め込む。\n\n3 プロダクト計 12 名で 6 ヶ月運用し、ロジック欠陥の検出率が前年比で上昇する一方、レビュー時間は減少傾向を確認した（SIGSE 2024、TSE 2024 で発表）。"
 }
