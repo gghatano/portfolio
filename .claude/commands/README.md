@@ -13,10 +13,11 @@ Claude Code でこのリポジトリを開いているとき、コンテンツ�
 | `/add-affiliation` | 所属エントリを追加 | `<メモ or #issue>` |
 | `/add-product` | プロダクトエントリを追加 | `<メモ or #issue>` |
 | `/update-content` | 既存コンテンツを更新 | `<slug or path> <メモ or #issue>` |
+| `/bulk-import` | `import/<collection>.md` を一括変換 | `<collection名>` |
 
 ## 使い方
 
-3 通り。
+4 通り。
 
 ### 1. Issue 経由
 
@@ -33,6 +34,10 @@ Claude Code でこのリポジトリを開いているとき、コンテンツ�
 ```
 /update-content 2025-jsconf-jp video_url を https://... に追加
 ```
+
+### 4. 一括取り込み（初期シードや大量入力に）
+
+[`import/<collection>.md`](../../import/) を Markdown 表で書く → `/bulk-import <collection>` で個別ファイルに分解。詳細は [`import/README.md`](../../import/README.md)。
 
 ## スキーマと真実
 

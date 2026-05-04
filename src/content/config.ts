@@ -37,6 +37,8 @@ const career = defineCollection({
     location: z.string().optional(),
     summary: z.string().optional(),
     highlights: z.array(z.string()).optional(),
+    /** 組織や案件の関連 URL（任意） */
+    url: z.string().url().optional(),
   }),
 });
 
@@ -53,6 +55,8 @@ const talks = defineCollection({
     language: z.enum(['ja', 'en']),
     slides_url: z.string().url().optional(),
     video_url: z.string().url().optional(),
+    /** イベントページなどスライド/動画以外の関連 URL（任意） */
+    url: z.string().url().optional(),
   }),
 });
 
@@ -77,6 +81,8 @@ const publications = defineCollection({
     pdf_url: z.string().url().optional(),
     links: z.array(linkSchema).optional(),
     bibtex: z.string().optional(),
+    /** 論文・寄稿の掲載ページなどの関連 URL（任意） */
+    url: z.string().url().optional(),
   }),
 });
 
@@ -114,6 +120,8 @@ const products = defineCollection({
     icon: z.string().min(1).max(16).optional(),
     /** 詳細ページに表示する追加の説明（任意、Markdown 段落区切り） */
     description_md: z.string().optional(),
+    /** プロダクトの主要 URL（任意 / links とは別。サイト URL や代表リンクに使う） */
+    url: z.string().url().optional(),
   }),
 });
 
