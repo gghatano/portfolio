@@ -1,9 +1,0 @@
-{
-  "period_start": "2018-04",
-  "period_end": "2022-03",
-  "organization": "株式会社プレースホルダ",
-  "role": "ソフトウェアエンジニア",
-  "location": "東京",
-  "summary": "BtoB SaaS のフロントエンド／バックエンド両面を担当。",
-  "highlights": ["TypeScript 移行の主導", "課金関連基盤の刷新と段階的リリースの設計"]
-}
