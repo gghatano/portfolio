@@ -27,7 +27,6 @@ allowed-tools: Bash, Read, Write
 | doi |  | DOI（`10.xxxx/...`） |
 | pdf_url |  | PDF URL |
 | links |  | `{ label, url }` 配列 |
-| bibtex |  | BibTeX エントリ（複数行） |
 | (本文) | ✓ | アブストラクト |
 
 ## 手順
@@ -44,7 +43,7 @@ allowed-tools: Bash, Read, Write
 4. 必須フィールドが不足していればユーザーに問い合わせる。
 5. slug を生成: `<YYYY>-<媒体や論文の短いキーワード>` の kebab-case（例: `2025-icse`、`2024-tse`、`2025-magazine-001`）。衝突時は末尾を足す。
 6. [`docs/templates/publication.md.template`](../../docs/templates/publication.md.template) を Read してフォーマットを確認。
-7. `src/content/publications/<slug>.md` を Write。任意フィールドは値が無ければ frontmatter から省略。`bibtex` は YAML の block scalar (`|`) で書く。
+7. `src/content/publications/<slug>.md` を Write。任意フィールドは値が無ければ frontmatter から省略。
 8. `pnpm exec astro check` を実行してスキーマ検証。
 9. 作成したファイルパス、slug、主要フィールド要約を 3〜5 行で報告。
 

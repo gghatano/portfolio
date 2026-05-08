@@ -24,19 +24,7 @@
 
 abstract（必須）。詳細ページの「概要」として表示される。
 
-## bibtex: <slug>
-
-bibtex（任意）。BibTeX エントリ全体を貼る。
-
 <!--
 ## body: 2024-sigse-quality
 社内 3 プロダクト計 12 名のコードレビューにおいて、観点ドキュメントの導入前後で検出された欠陥の種別と件数を比較した。
-
-## bibtex: 2024-sigse-quality
-@inproceedings{hatano2024review,
-  author    = {Hatano, Takuma and Yamada, Taro and Sato, Hanako},
-  title     = {Effect of Review-Perspective Documents on Defect Detection},
-  booktitle = {SIGSE},
-  year      = {2024}
-}
 -->

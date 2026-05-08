@@ -31,8 +31,6 @@ allowed-tools: Bash, Read, Write
 別の本文。
 ```
 
-publications では `## bibtex: <slug>` も使える。
-
 ## 解析ルール
 
 1. **表の認識**: 連続する `|` で始まる行のうち、`| --- |` で始まる separator 行とその直後の連続データ行を検出する。`<!-- ... -->` で囲まれた行は無視。
@@ -44,7 +42,6 @@ publications では `## bibtex: <slug>` も使える。
    - `authors`: セミコロン `;` 区切り（要素は `**name**` 形式を保持）
    - `links`: カンマ区切り、各要素は `ラベル=URL` 形式 → `[{ label, url }]` に変換
 5. **body セクション**: `^##\s+body:\s+(\S+)\s*$` で開始、次の `##` 見出しまでを本文とする。先頭/末尾の空行はトリム。
-6. **bibtex セクション** (publications のみ): 同様に `^##\s+bibtex:\s+(\S+)\s*$` で開始。
 
 ## 出力
 
@@ -52,21 +49,21 @@ publications では `## bibtex: <slug>` も使える。
 | --- | --- | --- |
 | products | `src/content/products/<slug>.json` | JSON |
 | talks | `src/content/talks/<slug>.md` | frontmatter + body |
-| publications | `src/content/publications/<slug>.md` | frontmatter (bibtex 含む) + body |
+| publications | `src/content/publications/<slug>.md` | frontmatter + body |
 | career | `src/content/career/<slug>.json` | JSON |
 | affiliations | `src/content/affiliations/<slug>.json` | JSON |
 | profile | `src/content/profile/main.json` | JSON（slug は無視、必ず `main.json` に書く） |
 
 body の対応:
 - `talks`: body → md 本文
-- `publications`: body → md 本文、bibtex → frontmatter `bibtex` フィールド
+- `publications`: body → md 本文
 - `products`: body → JSON `description_md` フィールド
 - `profile`: body → JSON `bio_md` フィールド
 
 ## 手順
 
 1. `import/$ARGUMENTS.md` を Read。存在しなければエラー報告。
-2. 表とすべての body / bibtex セクションを解析。
+2. 表とすべての body セクションを解析。
 3. 各行を schema フィールドにマップ。schema は [`src/content/config.ts`](../../src/content/config.ts) を参照。
 4. body セクションの内容を該当エントリに紐付け。
 5. ファイルに書き出す（既存は上書き、idempotent）。

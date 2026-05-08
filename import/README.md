@@ -31,8 +31,7 @@
 
 ### body セクション
 
-長文（abstract / description_md / bio_md / bibtex）は表の下に `## body: <slug>` 見出しで本文を書く。
-publications の `bibtex` だけは `## bibtex: <slug>` という別の見出し。
+長文（abstract / description_md / bio_md）は表の下に `## body: <slug>` 見出しで本文を書く。
 
 ```markdown
 ## body: 2026-jsconf

@@ -88,17 +88,6 @@ body:
         ```
 
   - type: textarea
-    id: bibtex
-    attributes:
-      label: BibTeX（任意）
-      placeholder: |
-        @inproceedings{...,
-          author = {...},
-          ...
-        }
-      render: bibtex
-
-  - type: textarea
     id: abstract
     attributes:
       label: アブストラクト

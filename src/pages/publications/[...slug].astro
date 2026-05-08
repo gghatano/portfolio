@@ -72,13 +72,6 @@ if (d.pdf_url) articleJsonLd.url = d.pdf_url;
         </ul>
       </section>
     )}
-
-    {d.bibtex && (
-      <section class="bibtex" aria-labelledby="bibtex-heading">
-        <h2 id="bibtex-heading">BibTeX</h2>
-        <pre><code>{d.bibtex}</code></pre>
-      </section>
-    )}
   </article>
 </BaseLayout>
 
@@ -117,15 +110,4 @@ if (d.pdf_url) articleJsonLd.url = d.pdf_url;
   .links { padding-block: var(--space-5); border-top: 1px solid var(--c-rule); }
   .links h2 { font-size: 1rem; margin-bottom: var(--space-3); }
   .links ul { list-style: none; display: flex; gap: var(--space-5); flex-wrap: wrap; }
-
-  .bibtex { padding-block: var(--space-5); border-top: 1px solid var(--c-rule); }
-  .bibtex h2 { font-size: 1rem; margin-bottom: var(--space-3); }
-  .bibtex pre {
-    background: var(--c-bg-elev);
-    padding: var(--space-4);
-    overflow-x: auto;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
 </style>
