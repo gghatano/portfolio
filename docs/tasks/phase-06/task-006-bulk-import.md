@@ -27,7 +27,7 @@
 ## 設計判断
 - **書きやすさ重視**: スプレッドシート/エディタどちらでも書ける Markdown 表に統一。CSV/TSV ではなく Markdown 表を選んだのは Git diff レビューしやすさと、本文セクションを同じファイルに持たせる利便性のため。
 - **配列フィールドの区切り**: `,`（tech）と `;`（highlights, authors）で使い分ける。要素内にカンマが入りうる項目はセミコロンで区切る。`links` は `label=URL` の対表現にすることで `|` を避け、表セルに収まる形にした。
-- **長文は body セクション**: tagline 程度はセルに収まるが、abstract / description_md / bio_md / bibtex は段落区切りが必要なので `## body: <slug>` 見出しで分離。
+- **長文は body セクション**: tagline 程度はセルに収まるが、abstract / description_md / bio_md は段落区切りが必要なので `## body: <slug>` 見出しで分離。
 - **slug が必須**: 出力先ファイル名を表で明示することで、再実行時に同じファイルが上書きされる idempotent 性を確保。
 - **`url` の追加**: career/talks/publications/products に optional な汎用 URL を追加。affiliations は既に `url` を持っていたためそのまま。プロダクトの `links` 配列とは別のレイヤとして「主要 1 URL」を保持できる。
 

@@ -11,13 +11,6 @@ doi: 10.0000/example             # 任意
 pdf_url: https://example.com/paper.pdf       # 任意
 links:                           # 任意 / { label, url } 配列
   - { label: "発表スライド", url: "https://example.com/slides/..." }
-bibtex: |                        # 任意 / 複数行 OK
-  @inproceedings{...,
-    author    = {...},
-    title     = {...},
-    booktitle = {...},
-    year      = {...}
-  }
 ---
 
 アブストラクト本文。詳細ページの「概要」セクションに表示される。

@@ -80,7 +80,6 @@ const publications = defineCollection({
     doi: z.string().optional(),
     pdf_url: z.string().url().optional(),
     links: z.array(linkSchema).optional(),
-    bibtex: z.string().optional(),
     /** 論文・寄稿の掲載ページなどの関連 URL（任意） */
     url: z.string().url().optional(),
   }),

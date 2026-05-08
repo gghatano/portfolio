@@ -10,7 +10,7 @@
 - [x] `/` にプロフィール + 各セクション直近 3 件のプレビュー
 - [x] `/career/` に時系列の経歴一覧
 - [x] `/talks/` 一覧（年単位グルーピング + 種別フィルタ）と `/talks/[...slug]/` 詳細
-- [x] `/publications/` 一覧と `/publications/[...slug]/` 詳細（DOI / PDF / BibTeX 対応）
+- [x] `/publications/` 一覧と `/publications/[...slug]/` 詳細（DOI / PDF 対応）
 - [x] `/affiliations/` 一覧
 - [x] `/contact/` 連絡先（mailto を JS hydration、SNS リンク）
 - [x] `/404`（ホームへの戻り導線）

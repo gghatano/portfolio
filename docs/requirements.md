@@ -66,7 +66,7 @@
 /talks/                 発表一覧
 /talks/[slug]/          発表詳細（必要な場合のみ生成）
 /publications/          論文・寄稿一覧
-/publications/[slug]/   論文詳細（abstract や BibTeX を出すため詳細あり推奨）
+/publications/[slug]/   論文詳細（abstract を出すため詳細あり推奨）
 /affiliations/          所属団体・コミュニティ
 /contact/               連絡先（または / の末尾セクションでも可）
 /404                    404 ページ
@@ -115,7 +115,6 @@ Zod スキーマでの厳格バリデーションを必須とする。型は `sr
 - `doi?: string`
 - `pdf_url?: string`
 - `links?: { label: string; url: string }[]`
-- `bibtex?: string`
 - `abstract_md?: string`
 
 #### 4.2.5 `affiliations`（複数）

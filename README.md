@@ -87,8 +87,6 @@ doi: 10.0000/example
 pdf_url: https://example.com/paper.pdf
 links:
   - { label: "発表スライド", url: "https://..." }
-bibtex: |
-  @inproceedings{...}
 ---
 
 abstract 本文。
