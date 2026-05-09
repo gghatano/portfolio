@@ -1,0 +1,13 @@
+{
+  "name": "Blackjack Template",
+  "tagline": "ブラックジャックを題材にしたWebアプリ開発テンプレート。ゲームロジック実装、状態管理、UI構築を学習・検証できる構成を提供。",
+  "period_start": "2025-04",
+  "period_end": "present",
+  "role": "Developer",
+  "tech": ["React", "TypeScript", "Vite", "Tailwind CSS"],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/gghatano/blackjack-template" }
+  ],
+  "priority": 5,
+  "icon": "type"
+}

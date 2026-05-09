@@ -1,0 +1,14 @@
+{
+  "name": "Privacy Incident Catalog",
+  "tagline": "プライバシー関連インシデントを事例ベースで整理・検索できるカタログサイト。事例データの構造化、一覧・詳細表示、検証ワークフローを実装。",
+  "period_start": "2026-05",
+  "period_end": "present",
+  "role": "Product owner / developer",
+  "tech": ["React", "TypeScript", "Vite", "Tailwind CSS", "Zod", "GitHub Pages"],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/gghatano/privacy-incident-catalog" },
+    { "label": "Webサイト", "url": "https://gghatano.github.io/privacy-incident-catalog/" }
+  ],
+  "priority": 7,
+  "icon": "review"
+}
