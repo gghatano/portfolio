@@ -7,7 +7,7 @@ function escapeHtml(s: string): string {
     .replaceAll("'", '&#39;');
 }
 
-/** 著者名のうち `**畑野 拓馬**` のように二重アスタリスクで囲まれたものを <strong class="self"> に変換する。 */
+/** 著者名のうち `**波多野 卓磨**` のように二重アスタリスクで囲まれたものを <strong class="self"> に変換する。 */
 export function renderAuthors(authors: readonly string[]): string {
   return authors
     .map((a) => {
