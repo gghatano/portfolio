@@ -3,5 +3,10 @@
   "name_en": "Takuma Hatano",
   "tagline": "プライバシー保護技術の研究員 / 安心安全なデータ流通の社会実装",
   "bio_md": "日鉄ソリューションズ株式会社 システム研究開発センターの研究員として、安心安全なデータ流通を目指した研究開発をリードしています。特に匿名加工情報・仮名加工情報・合成データなどのプライバシー保護技術 (PETs) に関心を持ち、医療・金融・自治体等の領域でのデータ利活用支援、技術検証、顧客案件への適用に取り組んでいます。\n\n社外では情報処理学会 PWS運営委員会・データ合成技術評価委員会の委員として PWS Cup の設計・運営に参画しているほか、PETs社会実装促進コンソーシアムのワーキンググループリーダとして産学官連携の活動を進めています。Proceedings on Privacy Enhancing Technologies (PoPETs) やコンピュータセキュリティシンポジウム (CSS) での論文発表、PWS Meetup・情報処理学会全国大会・アクチュアリー会・データ社会推進協議会等での登壇、自社メディア「TO THE FUTURE」や統計と情報の専門誌「エストレーラ」への寄稿を通じて研究成果を発信しています。\n\nこのサイトは論文・登壇・所属の起点として、SNS と各種インデックスの間にあるハブとして使うことを目的としています。",
-  "links": []
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/gghatano" },
+    { "label": "X (Twitter)", "url": "https://x.com/gg_hatano", "rel": "me" },
+    { "label": "Qiita", "url": "https://qiita.com/gg_hatano" },
+    { "label": "SlideShare", "url": "https://share.google/jK4FxZ4U8f1qFVAZc" }
+  ]
 }
