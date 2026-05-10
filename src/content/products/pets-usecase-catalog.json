@@ -1,0 +1,13 @@
+{
+  "name": "PETs Usecase Catalog",
+  "tagline": "Privacy Enhancing Technologies（PETs）の活用事例を整理・公開するカタログサイト。匿名化、合成データ、秘密計算、連合学習などの事例を構造化して検索・参照可能。",
+  "period_start": "2025-01",
+  "period_end": "present",
+  "role": "Product owner / developer",
+  "tech": ["TypeScript", "React", "Vite", "GitHub Pages", "JSON", "Privacy Enhancing Technologies"],
+  "links": [
+    { "label": "Webサイト", "url": "https://pwscup.github.io/pets-usecase-catalog/" }
+  ],
+  "priority": 8,
+  "icon": "book"
+}

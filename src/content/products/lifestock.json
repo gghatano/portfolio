@@ -1,0 +1,14 @@
+{
+  "name": "LifeStock",
+  "tagline": "日々の行動・習慣・自己投資を資産として可視化するライフログアプリ。健康・学習・生活改善の継続状況を記録・分析可能。",
+  "period_start": "2025-05",
+  "period_end": "present",
+  "role": "Product owner / developer",
+  "tech": ["React", "TypeScript", "Firebase", "Firestore", "Vite", "Tailwind CSS"],
+  "links": [
+    { "label": "Webサイト", "url": "https://lifestock-f2900.web.app/" },
+    { "label": "GitHub", "url": "https://github.com/gghatano/lifestock" }
+  ],
+  "priority": 7,
+  "icon": "billing"
+}
