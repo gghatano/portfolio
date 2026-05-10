@@ -5,9 +5,7 @@
   "period_end": "present",
   "role": "Developer",
   "tech": ["React", "TypeScript", "Vite", "Tailwind CSS"],
-  "links": [
-    { "label": "GitHub", "url": "https://github.com/gghatano/blackjack-template" }
-  ],
+  "links": [{ "label": "GitHub", "url": "https://github.com/gghatano/blackjack-template" }],
   "priority": 5,
   "icon": "type"
 }

@@ -5,9 +5,7 @@
   "period_end": "present",
   "role": "Product owner / developer",
   "tech": ["TypeScript", "React", "Vite", "GitHub Pages", "JSON", "Privacy Enhancing Technologies"],
-  "links": [
-    { "label": "Webサイト", "url": "https://pwscup.github.io/pets-usecase-catalog/" }
-  ],
+  "links": [{ "label": "Webサイト", "url": "https://pwscup.github.io/pets-usecase-catalog/" }],
   "priority": 8,
   "icon": "book"
 }
