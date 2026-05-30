@@ -61,6 +61,7 @@ const allTypes = Array.from(new Set(items.map((i) => i.data.type)));
                   <p class="links">
                     {t.data.slides_url && <ExternalLink href={t.data.slides_url} label="スライド" />}
                     {t.data.video_url && <ExternalLink href={t.data.video_url} label="動画" />}
+                    {t.data.url && <ExternalLink href={t.data.url} label="イベントページ" />}
                   </p>
                 </EntryRow>
               </li>

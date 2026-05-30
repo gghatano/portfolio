@@ -74,12 +74,13 @@ const talkJsonLd: Record<string, unknown> = d.video_url
       <Content />
     </div>
 
-    {(d.slides_url || d.video_url) && (
+    {(d.slides_url || d.video_url || d.url) && (
       <section class="links" aria-label="関連リンク">
         <h2>関連リンク</h2>
         <ul>
           {d.slides_url && <li><ExternalLink href={d.slides_url} label="スライド" /></li>}
           {d.video_url && <li><ExternalLink href={d.video_url} label="動画" /></li>}
+          {d.url && <li><ExternalLink href={d.url} label="イベントページ" /></li>}
         </ul>
       </section>
     )}

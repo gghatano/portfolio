@@ -7,6 +7,10 @@
     { "label": "GitHub", "url": "https://github.com/gghatano" },
     { "label": "X (Twitter)", "url": "https://x.com/gg_hatano", "rel": "me" },
     { "label": "Qiita", "url": "https://qiita.com/gg_hatano" },
-    { "label": "SlideShare", "url": "https://share.google/jK4FxZ4U8f1qFVAZc" }
+    {
+      "label": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=3wOKYM8AAAAJ&hl=ja"
+    },
+    { "label": "SlideShare", "url": "https://www.slideshare.net/takumahatano18" }
   ]
 }
