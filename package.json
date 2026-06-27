@@ -7,13 +7,16 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "astro": "astro",
     "check": "astro check",
     "lint": "biome check src",
-    "format": "biome format --write src"
+    "format": "biome format --write src",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/sitemap": "^3.2.0",
     "astro": "^5.0.0"
   },
@@ -21,7 +24,8 @@
     "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "^1.9.4",
     "sharp": "^0.33.5",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wrangler": "^4.105.0"
   },
   "packageManager": "pnpm@10.33.2"
 }
