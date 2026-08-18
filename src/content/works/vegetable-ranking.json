@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/vegetable-ranking",
+  "title": "野菜ランキング",
+  "summary": "野菜を並べ替えてランキングを作り、そのまま表示できる小さな Web アプリ。",
+  "site_url": "https://gghatano.github.io/vegetable-ranking/",
+  "category": "app",
+  "updated": "2026-02-18",
+  "stars": 0,
+  "language": "JavaScript"
+}

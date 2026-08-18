@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/lylic-exam-generator",
+  "title": "古典入試風 画像ジェネレータ",
+  "summary": "任意のテキストを、古典の入試問題のような紙面レイアウトの画像に変換するジェネレータ。",
+  "site_url": "https://gghatano.github.io/lylic-exam-generator/",
+  "category": "app",
+  "updated": "2026-02-24",
+  "stars": 1,
+  "language": "TypeScript"
+}

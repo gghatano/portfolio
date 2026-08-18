@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/synthetic-restaurant-data",
+  "title": "ファミレス合成データ生成",
+  "summary": "ファミリーレストランの来店・注文・調理を模した合成データを、期間とシードを指定して再現可能に生成する CLI。",
+  "site_url": "https://gghatano.github.io/synthetic-restaurant-data/",
+  "category": "synthetic",
+  "updated": "2026-04-23",
+  "stars": 0,
+  "language": "Python"
+}

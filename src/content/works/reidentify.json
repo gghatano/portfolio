@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/reidentify",
+  "title": "reidentify（R パッケージ）",
+  "summary": "匿名加工データの再識別リスクを測る R パッケージ。攻撃者が持つと想定するデータと突き合わせ、元の個人に紐づけ直せるレコードの割合を推定する。",
+  "site_url": "https://gghatano.github.io/reidentify/",
+  "category": "privacy",
+  "updated": "2026-08-02",
+  "stars": 0,
+  "language": "R"
+}

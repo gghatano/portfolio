@@ -124,6 +124,30 @@ const products = defineCollection({
   }),
 });
 
+// 作成物（リポジトリ）。公開ページが生きているものだけを 1 件 1 ファイルで持ち、
+// /works/ にカードとして並べる。API 由来のフィールド（language / updated / stars）は
+// `pnpm sync:works` で洗い替えるので、手で書き換えても次回同期で上書きされる。
+const workCategory = z.enum(['privacy', 'synthetic', 'analysis', 'app', 'site']);
+
+const works = defineCollection({
+  type: 'data',
+  schema: z.object({
+    /** GitHub のリポジトリ識別子。`owner/name` 形式 */
+    repo: z.string().regex(/^[\w.-]+\/[\w.-]+$/u, 'repo は owner/name 形式'),
+    title: z.string().min(1),
+    summary: z.string().min(1),
+    /** 公開ページの URL（GitHub Pages とは限らない） */
+    site_url: z.string().url(),
+    category: workCategory,
+    /** GitHub の primary language（同期で更新） */
+    language: z.string().optional(),
+    /** リポジトリの最終更新日（同期で更新） */
+    updated: isoDate,
+    /** star 数（同期で更新） */
+    stars: z.number().int().nonnegative().default(0),
+  }),
+});
+
 export const collections = {
   profile,
   career,
@@ -131,7 +155,9 @@ export const collections = {
   publications,
   affiliations,
   products,
+  works,
 };
 
 export type TalkType = z.infer<typeof talkType>;
 export type PublicationType = z.infer<typeof publicationType>;
+export type WorkCategory = z.infer<typeof workCategory>;

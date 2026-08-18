@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/expert_advice",
+  "title": "Expert Advice（予測アンサンブル）",
+  "summary": "Prediction with Expert Advice の枠組みで電力負荷を予測するアンサンブル。Hedge 系と Fixed-Share を同条件で比較し、集約が効く条件を実験で切り分けたレポート。",
+  "site_url": "https://gghatano.github.io/expert_advice/",
+  "category": "analysis",
+  "updated": "2026-08-18",
+  "stars": 0,
+  "language": "Python"
+}

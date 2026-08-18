@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/qr-generator",
+  "title": "QR コード生成ツール",
+  "summary": "URL やテキストから QR コードを生成し、サイズを調整して PNG で保存できる、ブラウザだけで完結するツール。",
+  "site_url": "https://gghatano.github.io/qr-generator/",
+  "category": "app",
+  "updated": "2026-03-16",
+  "stars": 0,
+  "language": "HTML"
+}

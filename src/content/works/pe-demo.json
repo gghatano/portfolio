@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/pe-demo",
+  "title": "Tab-PE 公式デモ再現",
+  "summary": "Microsoft DPSDA の Tabular Private Evolution 公式デモを、上流コミットを固定したうえで再現追試したリポジトリ。",
+  "site_url": "https://gghatano.github.io/pe-demo/",
+  "category": "synthetic",
+  "updated": "2026-07-19",
+  "stars": 0,
+  "language": "Python"
+}

@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/synthetic_classic_twitter",
+  "title": "Twatter",
+  "summary": "あのころの Twitter の画面と操作感を再現した Web アプリ。",
+  "site_url": "https://gghatano.github.io/synthetic_classic_twitter/",
+  "category": "app",
+  "updated": "2026-04-04",
+  "stars": 2,
+  "language": "JavaScript"
+}

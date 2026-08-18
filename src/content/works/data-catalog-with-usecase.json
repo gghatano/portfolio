@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/data-catalog-with-usecase",
+  "title": "データカタログ モック",
+  "summary": "データカタログの一覧・詳細画面に、合成データと仮想ユースケースを組み合わせたモックアプリケーション。",
+  "site_url": "https://gghatano.github.io/data-catalog-with-usecase/",
+  "category": "synthetic",
+  "updated": "2025-04-12",
+  "stars": 0,
+  "language": "JavaScript"
+}

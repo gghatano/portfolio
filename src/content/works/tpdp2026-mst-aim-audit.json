@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/tpdp2026-mst-aim-audit",
+  "title": "MST / AIM の DP 監査",
+  "summary": "MST / AIM の差分プライバシー保証を Gaussian DP で tight に監査する再現実験。メンバーシップ推論の FPR–FNR トレードオフから経験的に検証する。",
+  "site_url": "https://gghatano.github.io/tpdp2026-mst-aim-audit/",
+  "category": "analysis",
+  "updated": "2026-06-23",
+  "stars": 0,
+  "language": "HTML"
+}

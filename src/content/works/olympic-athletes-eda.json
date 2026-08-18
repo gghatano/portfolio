@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/olympic-athletes-eda",
+  "title": "オリンピック選手データ EDA",
+  "summary": "1896 アテネ〜2026 ミラノの全大会・選手個票 31 万行を R で読み、体格とパフォーマンスの関係などを大会内比較でまとめたレポート。",
+  "site_url": "https://gghatano.github.io/olympic-athletes-eda/",
+  "category": "analysis",
+  "updated": "2026-08-04",
+  "stars": 0,
+  "language": "R"
+}

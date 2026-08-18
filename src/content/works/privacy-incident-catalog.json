@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/privacy-incident-catalog",
+  "title": "プライバシー炎上事例カタログ",
+  "summary": "データ活用やプライバシーに関する炎上・トラブル事例を収集して構造化し、検索・参照できる Web カタログ。",
+  "site_url": "https://gghatano.github.io/privacy-incident-catalog/",
+  "category": "privacy",
+  "updated": "2026-06-17",
+  "stars": 0,
+  "language": "TypeScript"
+}

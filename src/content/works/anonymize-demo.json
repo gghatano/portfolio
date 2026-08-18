@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/anonymize-demo",
+  "title": "匿名加工・仮名加工 比較デモ",
+  "summary": "匿名加工情報と仮名加工情報の違いを、画面の操作と表示で直感的に比べられる React デモ。加工処理そのものではなく、違いの理解に振った構成。",
+  "site_url": "https://gghatano.github.io/anonymize-demo/",
+  "category": "privacy",
+  "updated": "2026-03-21",
+  "stars": 0,
+  "language": "TypeScript"
+}

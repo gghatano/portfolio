@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/syntheticdata-generation-catalog",
+  "title": "合成データ生成カタログ",
+  "summary": "Python 製 OSS を対象に、単一表・複数表・時系列それぞれの合成データ生成手法を、有用性・安全性・扱いやすさの観点で実験比較したカタログサイト。",
+  "site_url": "https://gghatano.github.io/syntheticdata-generation-catalog/",
+  "category": "synthetic",
+  "updated": "2026-05-04",
+  "stars": 0,
+  "language": "Python"
+}

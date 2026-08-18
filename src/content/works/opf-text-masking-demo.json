@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/opf-text-masking-demo",
+  "title": "OPF 日本語マスキング検証",
+  "summary": "OpenAI Privacy Filter を日本語の自由記述に適用し、PII 検出性能と匿名加工業務の工数削減効果を段階的に数値で検証する実証実験。",
+  "site_url": "https://gghatano.github.io/opf-text-masking-demo/",
+  "category": "privacy",
+  "updated": "2026-06-10",
+  "stars": 0,
+  "language": "HTML"
+}

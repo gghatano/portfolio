@@ -1,0 +1,213 @@
+---
+import { getCollection } from 'astro:content';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatDate } from '~/lib/format';
+import { workCategoryLabel } from '~/lib/labels';
+import { repoName, repoUrl, workCategoryOrder } from '~/lib/works';
+
+const items = (await getCollection('works')).sort((a, b) =>
+  b.data.updated.localeCompare(a.data.updated),
+);
+
+const used = new Set(items.map((i) => i.data.category));
+const categories = workCategoryOrder.filter((c) => used.has(c));
+const countOf = (c: string) => items.filter((i) => i.data.category === c).length;
+---
+
+<BaseLayout
+  title="作成物"
+  description="公開ページのある個人リポジトリの一覧。デモ・実証レポート・Web アプリ・まとめサイトをカード形式で並べています。"
+  path="/works/"
+>
+  <SectionHeader
+    eyebrow="Works"
+    title="作成物"
+    lead="公開ページが生きているリポジトリをまとめています。カードのタイトルから公開ページへ、右下のリンクから GitHub へ飛べます。"
+  />
+
+  {items.length === 0 ? (
+    <p class="empty">作成物はまだありません。</p>
+  ) : (
+    <>
+      <div class="filter" data-filter-root>
+        <span class="filter-label">分野で絞り込み:</span>
+        <button type="button" data-filter="all" aria-pressed="true">すべて（{items.length}）</button>
+        {categories.map((c) => (
+          <button type="button" data-filter={c} aria-pressed="false">
+            {workCategoryLabel[c]}（{countOf(c)}）
+          </button>
+        ))}
+      </div>
+
+      <ul class="card-grid">
+        {items.map((w) => (
+          <li class="card" data-category={w.data.category}>
+            <p class="card-cat">{workCategoryLabel[w.data.category]}</p>
+            <h2 class="card-title">
+              <ExternalLink href={w.data.site_url} label={w.data.title} />
+            </h2>
+            <p class="card-summary">{w.data.summary}</p>
+            <p class="card-meta">
+              {w.data.language && <span class="chip">{w.data.language}</span>}
+              <span>
+                更新 <time datetime={w.data.updated}>{formatDate(w.data.updated)}</time>
+              </span>
+              {w.data.stars > 0 && <span>★ {w.data.stars}</span>}
+            </p>
+            <p class="card-repo">
+              <ExternalLink href={repoUrl(w.data.repo)} label={repoName(w.data.repo)} />
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <p class="note" data-empty-note hidden>この分野の作成物はありません。</p>
+    </>
+  )}
+</BaseLayout>
+
+<script>
+  const root = document.querySelector('[data-filter-root]');
+  if (root) {
+    root.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLButtonElement)) return;
+      const filter = t.dataset.filter;
+      if (!filter) return;
+      root.querySelectorAll<HTMLButtonElement>('button[data-filter]').forEach((b) => {
+        b.setAttribute('aria-pressed', b === t ? 'true' : 'false');
+      });
+      let visible = 0;
+      document.querySelectorAll<HTMLLIElement>('li[data-category]').forEach((li) => {
+        const hide = filter !== 'all' && li.dataset.category !== filter;
+        li.hidden = hide;
+        if (!hide) visible += 1;
+      });
+      const note = document.querySelector<HTMLElement>('[data-empty-note]');
+      if (note) note.hidden = visible > 0;
+    });
+  }
+</script>
+
+<style>
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    padding-block: var(--space-3);
+    border-bottom: 1px dashed var(--c-rule);
+    margin-bottom: var(--space-5);
+  }
+  .filter-label {
+    color: var(--c-text-muted);
+    font-size: 0.85rem;
+    margin-inline-end: var(--space-2);
+  }
+  .filter button {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-rule);
+    border-radius: 999px;
+    padding: 0 0.9rem;
+    min-height: 44px;
+    line-height: 1;
+    transition: color var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick),
+      background-color var(--duration-quick) var(--easing-quick);
+  }
+  .filter button[aria-pressed='true'] {
+    color: var(--c-bg);
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+  .filter button:hover { color: var(--c-text); }
+  .filter button[aria-pressed='true']:hover { color: var(--c-bg); }
+
+  /* カード: 3 列 desktop / 2 列 tablet / 1 列 mobile。
+     行の高さを揃えるため card 自体を flex にして repo リンクを下端へ寄せる。 */
+  .card-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    height: 100%;
+    border: 1px solid var(--c-rule);
+    border-radius: 4px;
+    transition:
+      background var(--duration-quick) var(--easing-quick),
+      border-color var(--duration-quick) var(--easing-quick);
+  }
+  .card:hover {
+    background: var(--c-bg-elev);
+    border-color: var(--c-rule-strong);
+  }
+  .card-cat {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--c-text-muted);
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .card-title :global(a) {
+    text-decoration: none;
+    white-space: normal;
+    border-bottom: 1px solid transparent;
+  }
+  .card-title :global(a:hover) {
+    border-bottom-color: var(--c-accent);
+  }
+  .card-summary {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--c-text);
+  }
+  .card-meta {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    font-size: 0.78rem;
+    color: var(--c-text-muted);
+  }
+  .chip {
+    border: 1px solid var(--c-rule);
+    border-radius: 4px;
+    padding: 0 0.5em;
+    letter-spacing: 0.04em;
+  }
+  .card-repo {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+  }
+  .card-repo :global(a) {
+    color: var(--c-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .note,
+  .empty {
+    color: var(--c-text-muted);
+    padding-block: var(--space-5);
+  }
+
+  @media (max-width: 900px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
