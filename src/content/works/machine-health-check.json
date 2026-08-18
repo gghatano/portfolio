@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/machine-health-check",
+  "title": "マシンヘルスチェック",
+  "summary": "Ubuntu のマシンメトリクスを 30 分間隔で収集してスプレッドシートに記録し、ダッシュボードで可視化する仕組み。",
+  "site_url": "https://gghatano.github.io/machine-health-check/",
+  "category": "app",
+  "updated": "2026-08-16",
+  "stars": 0,
+  "language": "Python"
+}

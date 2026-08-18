@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/batting_lineup_optimizer",
+  "title": "打順最適化アプリ",
+  "summary": "スプレッドシートの打撃成績を読み込み、9 人の打順をヒューリスティック探索で組み替えながら平均得点を比較できる Web アプリ。",
+  "site_url": "https://gghatano.github.io/batting_lineup_optimizer/",
+  "category": "app",
+  "updated": "2025-08-02",
+  "stars": 0,
+  "language": "TypeScript"
+}

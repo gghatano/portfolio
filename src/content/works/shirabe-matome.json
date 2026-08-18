@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/shirabe-matome",
+  "title": "調べたことまとめ",
+  "summary": "その日に調べたこと・話したことをトピックごとに要約し、カレンダーと個別ページから辿れるようにした静的サイト。収集から要約まで日次で自動化。",
+  "site_url": "https://gghatano.github.io/shirabe-matome/",
+  "category": "site",
+  "updated": "2026-07-30",
+  "stars": 0,
+  "language": "Python"
+}

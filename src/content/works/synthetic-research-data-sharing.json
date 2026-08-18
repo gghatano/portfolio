@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/synthetic-research-data-sharing",
+  "title": "研究データ共有ワークフロー",
+  "summary": "生データを外部に出さずに分析してもらう code-to-data / TRE 型ワークフローを、合成データで開発し生データに適用する流れとして実演するデモ。",
+  "site_url": "https://gghatano.github.io/synthetic-research-data-sharing/",
+  "category": "synthetic",
+  "updated": "2026-06-24",
+  "stars": 0,
+  "language": "HTML"
+}

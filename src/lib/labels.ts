@@ -1,4 +1,4 @@
-import type { PublicationType, TalkType } from '~/content/config';
+import type { PublicationType, TalkType, WorkCategory } from '~/content/config';
 
 export const talkTypeLabel: Record<TalkType, string> = {
   keynote: '基調講演',
@@ -16,4 +16,12 @@ export const publicationTypeLabel: Record<PublicationType, string> = {
   chapter: '書籍章',
   preprint: 'プレプリント',
   magazine: '寄稿',
+};
+
+export const workCategoryLabel: Record<WorkCategory, string> = {
+  privacy: 'プライバシー・匿名加工',
+  synthetic: '合成データ',
+  analysis: '分析・再現実験',
+  app: 'ツール・アプリ',
+  site: 'サイト・まとめ',
 };

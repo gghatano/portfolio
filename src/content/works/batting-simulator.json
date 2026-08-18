@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/batting-simulator",
+  "title": "Batting Simulator",
+  "summary": "組んだ打順をモンテカルロ・シミュレーションにかけ、得点を試算する静的 SPA。",
+  "site_url": "https://gghatano.github.io/batting-simulator/",
+  "category": "app",
+  "updated": "2026-05-12",
+  "stars": 0,
+  "language": "TypeScript"
+}

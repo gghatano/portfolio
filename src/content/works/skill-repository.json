@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/skill-repository",
+  "title": "skill-repository",
+  "summary": "汎用的に使える Claude Skills を目的別プラグインとして配布するリポジトリ。6 プラグインを一覧・検索できる Pages 付き。",
+  "site_url": "https://gghatano.github.io/skill-repository/",
+  "category": "app",
+  "updated": "2026-08-09",
+  "stars": 0,
+  "language": "Python"
+}

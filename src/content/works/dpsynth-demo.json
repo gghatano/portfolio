@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/dpsynth-demo",
+  "title": "DPSynth デモ & レポート",
+  "summary": "Google の差分プライバシー合成データ生成ライブラリ dpsynth を日本語で解説し、UCI Adult Income データで実際に動かした実証評価レポート。",
+  "site_url": "https://gghatano.github.io/dpsynth-demo/",
+  "category": "synthetic",
+  "updated": "2026-07-20",
+  "stars": 1,
+  "language": "HTML"
+}

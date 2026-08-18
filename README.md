@@ -22,6 +22,7 @@ pnpm build    # dist/ に静的ファイルを書き出す
 pnpm preview  # build 結果を local で配信
 pnpm lint     # biome check
 pnpm check    # astro check（typecheck）
+pnpm sync:works  # 作成物カードの GitHub 情報を洗い替え（--write で反映）
 ```
 
 ## コンテンツ追加フロー
@@ -36,6 +37,7 @@ pnpm check    # astro check（typecheck）
 | `publications` | Markdown（frontmatter + 本文） | `src/content/publications/<slug>.md` |
 | `affiliations` | JSON（複数） | `src/content/affiliations/<slug>.json` |
 | `products` | JSON（複数 / トップに常時表示） | `src/content/products/<slug>.json` |
+| `works` | JSON（複数 / `/works/` にカード表示） | `src/content/works/<slug>.json` |
 
 スキーマ定義は [`src/content/config.ts`](src/content/config.ts)。各フィールドの型・必須／任意・enum 値はそこで一元管理しているので、項目を増やすときも先にスキーマを編集する。
 
@@ -109,6 +111,29 @@ abstract 本文。
 ```
 
 `period_end` は `YYYY-MM` または `"present"`。所属 (`affiliations`) も同形だが `summary` `url` 任意。
+
+## 作成物カード (`/works/`)
+
+公開ページが生きているリポジトリを 1 件 1 ファイルで持ち、`/works/` にカードとして並べる。「作ったものはとりあえずここを見れば辿れる」状態を保つためのページ。
+
+- 手で書くフィールド: `repo`（`owner/name`）/ `title` / `summary` / `site_url` / `category`
+- 同期で洗い替わるフィールド: `language` / `updated` / `stars`
+- `category` は `privacy` / `synthetic` / `analysis` / `app` / `site`。増やすときは `src/content/config.ts` の `workCategory`、`src/lib/labels.ts` の `workCategoryLabel`、`src/lib/works.ts` の `workCategoryOrder` を同時に更新する。
+
+### 同期
+
+```sh
+pnpm sync:works           # 差分・リンク切れ・未掲載リポジトリを表示するだけ
+pnpm sync:works -- --write  # JSON に反映
+```
+
+[`scripts/sync-works.mjs`](scripts/sync-works.mjs) は認証済みの `gh` CLI を使う。実行すると次の 3 つを報告する。
+
+1. `language` / `updated` / `stars` の差分
+2. `site_url` が 200 を返さなくなったエントリ（リンク切れ）
+3. 公開ページを持つのに `works` に載っていないリポジトリ（掲載候補）
+
+新しく作ったものは 3 を見て、`title` / `summary` / `category` を書いてファイルを足す。
 
 ## 著者表記ルール
 

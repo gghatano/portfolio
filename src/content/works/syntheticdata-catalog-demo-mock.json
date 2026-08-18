@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/syntheticdata-catalog-demo-mock",
+  "title": "合成データカタログ モック",
+  "summary": "合成データカタログの画面構成と情報設計を検証するための React + TypeScript 製モック。",
+  "site_url": "https://gghatano.github.io/syntheticdata-catalog-demo-mock/",
+  "category": "synthetic",
+  "updated": "2026-03-24",
+  "stars": 0,
+  "language": "TypeScript"
+}

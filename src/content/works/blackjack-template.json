@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/blackjack-template",
+  "title": "Word-BlackJack",
+  "summary": "スプレッドシートの単語＋数値リストを読み込み、合計を基準値に近づけて競う単語版ブラックジャック。データを差し替えればオリジナルの問題で遊べる。",
+  "site_url": "https://gghatano.github.io/blackjack-template/",
+  "category": "app",
+  "updated": "2026-05-12",
+  "stars": 1,
+  "language": "JavaScript"
+}

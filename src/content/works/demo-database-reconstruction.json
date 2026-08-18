@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/demo-database-reconstruction",
+  "title": "集計値からの復元デモ",
+  "summary": "丸めもノイズも入れていない集計表を重ね合わせると、公表していないはずの個人の値まで絞り込めることを、小規模校の 10 枚の表で示すデモ。",
+  "site_url": "https://gghatano.github.io/demo-database-reconstruction/",
+  "category": "privacy",
+  "updated": "2026-08-02",
+  "stars": 0,
+  "language": "Python"
+}

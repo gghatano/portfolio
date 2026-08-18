@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/smote-vs-sdg",
+  "title": "SMOTE vs 合成データ生成",
+  "summary": "冠動脈疾患データセットを対象に、SMOTE 系オーバーサンプリングと表形式データ合成（Gaussian Copula / CTGAN / TVAE）を、リーク防止を徹底した交差検証で比較。",
+  "site_url": "https://gghatano.github.io/smote-vs-sdg/",
+  "category": "synthetic",
+  "updated": "2026-07-15",
+  "stars": 0,
+  "language": "HTML"
+}

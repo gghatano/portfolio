@@ -1,0 +1,10 @@
+{
+  "repo": "gghatano/tpdp2026-binagg",
+  "title": "BinAgg 再現追試",
+  "summary": "統計的保証つき DP 線形回帰・合成データ生成（AISTATS 2026）を、公式実装 BinAgg で再現追試したレポート。",
+  "site_url": "https://gghatano.github.io/tpdp2026-binagg/",
+  "category": "analysis",
+  "updated": "2026-06-19",
+  "stars": 0,
+  "language": "HTML"
+}
