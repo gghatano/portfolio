@@ -1,0 +1,11 @@
+{
+  "repo": "gghatano/analyze_mlbdata_with_R",
+  "title": "R で MLB データ解析",
+  "summary": "retrosheet と Statcast のデータを R で解析した記事集。打席結果から指標を組み立て、選手や戦術の見え方が数字でどう変わるかを 24 本にまとめている。",
+  "site_url": "https://mlb.gghatano.com/",
+  "category": "analysis",
+  "repo_private": true,
+  "updated": "2026-08-18",
+  "stars": 0,
+  "language": "R"
+}

@@ -1,0 +1,12 @@
+{
+  "repo": "gghatano/pwscup2026",
+  "title": "PWS Cup 2026 作業ノート",
+  "summary": "匿名化技術コンテスト PWS Cup 2026 の作業リポジトリ。防御と攻撃を交互に書き足しながら 11 世代回した記録と、そこで得た知見を戦略ガイド・ナレッジベースとして整理している。",
+  "site_url": "https://pwscup2026notes.gghatano.com/",
+  "category": "privacy",
+  "access": "auth",
+  "repo_private": true,
+  "updated": "2026-08-17",
+  "stars": 0,
+  "language": "Python"
+}

@@ -116,8 +116,11 @@ abstract 本文。
 
 公開ページが生きているリポジトリを 1 件 1 ファイルで持ち、`/works/` にカードとして並べる。「作ったものはとりあえずここを見れば辿れる」状態を保つためのページ。
 
-- 手で書くフィールド: `repo`（`owner/name`）/ `title` / `summary` / `site_url` / `category`
-- 同期で洗い替わるフィールド: `language` / `updated` / `stars`
+- 手で書くフィールド: `repo`（`owner/name`）/ `title` / `summary` / `site_url` / `category` / `priority`
+- 並び順は **`priority` を持つもの（ピックアップ）が昇順で先頭 → 残りは `updated` の新しい順**。常にトップに出したいものだけ `priority` を振る（`products.priority` と同じ意味）
+- 同期で洗い替わるフィールド: `language` / `updated` / `stars` / `repo_private`
+- 認証が要る公開ページは `"access": "auth"` を付ける。カードに「要認証」と表示し、リンク切れ判定でも 302 / 403 を正常として扱う（Cloudflare Access のログインに飛ぶのが正常なため）
+- private リポジトリの成果物も載せられる。`repo_private` が true のカードは GitHub リンクを出さず、リポジトリ名を「（非公開リポジトリ）」付きで表示するだけにする
 - `category` は `privacy` / `synthetic` / `analysis` / `app` / `site`。増やすときは `src/content/config.ts` の `workCategory`、`src/lib/labels.ts` の `workCategoryLabel`、`src/lib/works.ts` の `workCategoryOrder` を同時に更新する。
 
 ### 同期
@@ -134,6 +137,23 @@ pnpm sync:works -- --write  # JSON に反映
 3. 公開ページを持つのに `works` に載っていないリポジトリ（掲載候補）
 
 新しく作ったものは 3 を見て、`title` / `summary` / `category` を書いてファイルを足す。
+
+### 更新頻度
+
+`updated` はコミットされたスナップショットなので、**並び順の鮮度 = 同期ジョブの実行間隔**になる。
+[`.github/workflows/sync-works.yml`](.github/workflows/sync-works.yml) が **毎日 09:00 JST** に
+同期し、差分があれば `src/content/works/` だけを commit して Pages デプロイを呼ぶ。頻度を変えるときは
+同ファイルの `cron` を書き換える（例: 毎週月曜なら `0 0 * * 1`）。手動で回すなら Actions タブから
+`Sync works cards` を `workflow_dispatch` する。
+
+差分が無ければ commit しないので、更新の無い日はデプロイも走らない。新しいリポジトリの掲載は
+ジョブのサマリに候補として出るだけで、自動追加はしない（説明文は手で書く前提のため）。
+
+private リポジトリのエントリは CI の `GITHUB_TOKEN` では読めないため、同期時に「同期をスキップ」として
+報告され、`language` / `updated` / `stars` は既存の値のまま残る。手元で `pnpm sync:works -- --write` を
+実行すれば（自分の `gh` の権限で読めるので）まとめて更新される。掲載候補のスキャンも public リポジトリ
+だけを対象にしている — 公開リポジトリの Actions ログは誰でも読めるので、private リポジトリ名を
+そこへ書き出さないため。
 
 ## 著者表記ルール
 

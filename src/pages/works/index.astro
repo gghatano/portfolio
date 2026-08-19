@@ -7,9 +7,13 @@ import { formatDate } from '~/lib/format';
 import { workCategoryLabel } from '~/lib/labels';
 import { repoName, repoUrl, workCategoryOrder } from '~/lib/works';
 
-const items = (await getCollection('works')).sort((a, b) =>
-  b.data.updated.localeCompare(a.data.updated),
-);
+// ピックアップ (priority あり) を昇順で先頭に、残りは最終更新の新しい順。
+const items = (await getCollection('works')).sort((a, b) => {
+  const pa = a.data.priority ?? Number.POSITIVE_INFINITY;
+  const pb = b.data.priority ?? Number.POSITIVE_INFINITY;
+  if (pa !== pb) return pa - pb;
+  return b.data.updated.localeCompare(a.data.updated);
+});
 
 const used = new Set(items.map((i) => i.data.category));
 const categories = workCategoryOrder.filter((c) => used.has(c));
@@ -24,7 +28,7 @@ const countOf = (c: string) => items.filter((i) => i.data.category === c).length
   <SectionHeader
     eyebrow="Works"
     title="作成物"
-    lead="公開ページが生きているリポジトリをまとめています。カードのタイトルから公開ページへ、右下のリンクから GitHub へ飛べます。"
+    lead="公開ページが生きているリポジトリをまとめています。先頭がピックアップ、以降は最終更新の新しい順。「要認証」のカードは Cloudflare Access で保護されており、権限のあるアカウントでのみ開けます。"
   />
 
   {items.length === 0 ? (
@@ -43,8 +47,12 @@ const countOf = (c: string) => items.filter((i) => i.data.category === c).length
 
       <ul class="card-grid">
         {items.map((w) => (
-          <li class="card" data-category={w.data.category}>
-            <p class="card-cat">{workCategoryLabel[w.data.category]}</p>
+          <li class:list={['card', { pinned: w.data.priority !== undefined }]} data-category={w.data.category}>
+            <p class="card-cat">
+              {w.data.priority !== undefined && <span class="pick">ピックアップ</span>}
+              {w.data.access === 'auth' && <span class="auth">要認証</span>}
+              {workCategoryLabel[w.data.category]}
+            </p>
             <h2 class="card-title">
               <ExternalLink href={w.data.site_url} label={w.data.title} />
             </h2>
@@ -57,7 +65,11 @@ const countOf = (c: string) => items.filter((i) => i.data.category === c).length
               {w.data.stars > 0 && <span>★ {w.data.stars}</span>}
             </p>
             <p class="card-repo">
-              <ExternalLink href={repoUrl(w.data.repo)} label={repoName(w.data.repo)} />
+              {w.data.repo_private ? (
+                <span>{repoName(w.data.repo)}<span class="private">（非公開リポジトリ）</span></span>
+              ) : (
+                <ExternalLink href={repoUrl(w.data.repo)} label={repoName(w.data.repo)} />
+              )}
             </p>
           </li>
         ))}
@@ -150,10 +162,32 @@ const countOf = (c: string) => items.filter((i) => i.data.category === c).length
     background: var(--c-bg-elev);
     border-color: var(--c-rule-strong);
   }
+  .card.pinned {
+    border-color: var(--c-rule-strong);
+  }
   .card-cat {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     color: var(--c-text-muted);
+  }
+  /* 要認証の標識。開いても Cloudflare Access のログインに飛ぶことを先に伝える。 */
+  .auth {
+    border: 1px dashed var(--c-rule-strong);
+    border-radius: 999px;
+    padding: 0.1em 0.6em;
+    letter-spacing: 0.08em;
+  }
+  /* ピックアップの標識。強調はアクセント色ではなく罫線の濃さで出す。 */
+  .pick {
+    border: 1px solid var(--c-rule-strong);
+    border-radius: 999px;
+    padding: 0.1em 0.6em;
+    letter-spacing: 0.08em;
+    color: var(--c-text);
   }
   .card-title {
     font-size: 1rem;
@@ -196,6 +230,13 @@ const countOf = (c: string) => items.filter((i) => i.data.category === c).length
   .card-repo :global(a) {
     color: var(--c-text-muted);
     font-family: var(--font-mono);
+  }
+  .card-repo > span {
+    font-family: var(--font-mono);
+  }
+  .private {
+    font-family: inherit;
+    margin-inline-start: 0.4em;
   }
 
   .note,

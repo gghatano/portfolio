@@ -145,6 +145,15 @@ const works = defineCollection({
     updated: isoDate,
     /** star 数（同期で更新） */
     stars: z.number().int().nonnegative().default(0),
+    /**
+     * ピックアップ。値を持つものが更新日より先に、昇順で並ぶ。
+     * 省略したものは最終更新の新しい順（`products.priority` と同じ意味で使う）。
+     */
+    priority: z.number().int().optional(),
+    /** 公開ページが認証を要求するか。`auth` は Cloudflare Access などで保護されているもの */
+    access: z.enum(['public', 'auth']).default('public'),
+    /** リポジトリが private か（同期で更新）。true のとき GitHub リンクは出さない */
+    repo_private: z.boolean().default(false),
   }),
 });
 
