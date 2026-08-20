@@ -4,7 +4,7 @@
   "summary": "時系列データ拡張が分類精度に与える効果を公開ベンチマークで系統的に評価し、必要被験者数を減らせるかを検証した論文形式のレポート。",
   "site_url": "https://gghatano.github.io/sp_sdg/",
   "category": "analysis",
-  "updated": "2026-07-19",
+  "updated": "2026-08-19",
   "stars": 0,
   "language": "Python"
 }
