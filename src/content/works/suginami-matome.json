@@ -4,7 +4,7 @@
   "summary": "杉並区の複数のイベント情報サイトを 1 日 1 回クロールし、タイトル・概要・リンクを 1 ページに集約する静的アグリゲーションサイト。",
   "site_url": "https://suginami-matome.gghatano.com",
   "category": "site",
-  "updated": "2026-08-20",
+  "updated": "2026-08-21",
   "stars": 0,
   "language": "HTML",
   "priority": 2
