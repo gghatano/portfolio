@@ -4,7 +4,7 @@
   "summary": "経歴・発表・論文・作成物をまとめた自己紹介サイト。Astro + Content Collections + Zod でコンテンツの型を固めている。",
   "site_url": "https://gghatano.github.io/portfolio/",
   "category": "site",
-  "updated": "2026-09-02",
+  "updated": "2026-09-03",
   "stars": 0,
   "language": "Astro"
 }
