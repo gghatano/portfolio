@@ -4,7 +4,7 @@
   "summary": "B.PREMIER のテキスト速報から交代記録を読み直し、試合ごとの選手の出場区間とラインナップ別の得失点をチャートにするサイト。毎朝前日の試合を取り込んで更新する。",
   "site_url": "https://gghatano.github.io/bleague-rotation/",
   "category": "analysis",
-  "updated": "2026-09-25",
+  "updated": "2026-09-26",
   "stars": 0,
   "language": "HTML"
 }
