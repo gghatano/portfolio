@@ -22,6 +22,9 @@
 クラブの静的な属性。決算データから `reference('clubs')` で参照する。
 
 ```ts
+// 2 つのコレクションで共有する
+const season = z.string().regex(/^\d{4}-\d{2}$/u, 'season は YYYY-YY 形式');
+
 const clubs = defineCollection({
   type: 'data',
   schema: z.object({
@@ -31,6 +34,7 @@ const clubs = defineCollection({
     prefecture: z.string().min(1),           // 栃木県
     fiscal_year_end_month: z.number().int().min(1).max(12), // 6
     aliases: z.array(z.string()).default([]), // 旧チーム名・旧社名。記事との照合に使う
+    premier_from: season.optional(),         // B.PREMIER 初参加シーズン（例: '2026-27'）。対象範囲の判定に使う
     url: z.string().url().optional(),
   }),
 });
@@ -38,11 +42,15 @@ const clubs = defineCollection({
 
 ---
 
+- 対象範囲（[README §1.3](README.md#13-対象範囲)）は `premier_from` を持つクラブとする。対象外のクラブも、リーグ平均との比較などで必要になれば `premier_from` なしで登録してよい。
+- 2016-17 以降にチーム名や運営会社が変わったクラブは、旧名をすべて `aliases` に入れる。古い年度の記事や PDF は旧名で書かれている。
+
 ## 3. シーズンと決算期の対応
 
 - `season` は `YYYY-YY` 形式（例: `2025-26`）で、リーグの「2025-26 シーズン（2025 年度）」に対応する。
 - 6 月決算のクラブでは「2026 年 6 月期」＝ `2025-26`。
 - 6 月以外の決算期のクラブがどのシーズンに割り当てられるかは、リーグ PDF の注記で確認して本節に追記する（task-002）。
+- 開幕前後の年度は、決算期の変更（12 か月未満の変則決算）が起きている可能性がある。期間が 12 か月でない場合は `notes` に記録し、比較の図では注記を付ける（task-006）。
 
 ---
 
@@ -144,3 +152,4 @@ const clubs = defineCollection({
 - 営業収入の内訳が上記 6 項目で過不足ないか
 - 6 月以外の決算期のクラブのシーズン割り当て（§3）
 - 入場者数をリーグ公式の「入場者数」と揃えるか（決算概要に載るか、別資料か）
+- 2016-17〜2022-23 のリーグ資料で、科目体系・開示項目がどう変わってきたか（task-006）

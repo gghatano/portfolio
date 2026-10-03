@@ -25,6 +25,7 @@
   - [task-003 決算記事の取り込みコマンド](phase-07/task-003-finance-ingest-command.md)
   - [task-004 比較ページと図コンポーネント](phase-07/task-004-finance-visualization.md)
   - [task-005 最初の分析記事](phase-07/task-005-first-article.md)
+  - [task-006 2016-17 までのさかのぼり取り込み](phase-07/task-006-finance-backfill.md)
 
 ## 運用ルール
 
