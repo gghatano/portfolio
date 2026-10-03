@@ -19,6 +19,12 @@
   - [task-004 products grid + 詳細ページ](phase-06/task-004-products-grid.md)
   - [task-005 products アイコンをピクトグラム化](phase-06/task-005-pictograms.md)
   - [task-006 bulk-import インフラ整備](phase-06/task-006-bulk-import.md)
+- Phase 7: ブログ + B.LEAGUE クラブ決算データベース（設計: [docs/bleague-finance/](../bleague-finance/README.md)）
+  - [task-001 ブログ基盤](phase-07/task-001-blog-foundation.md)
+  - [task-002 決算データのスキーマと初期データ](phase-07/task-002-finance-data-schema.md)
+  - [task-003 決算記事の取り込みコマンド](phase-07/task-003-finance-ingest-command.md)
+  - [task-004 比較ページと図コンポーネント](phase-07/task-004-finance-visualization.md)
+  - [task-005 最初の分析記事](phase-07/task-005-first-article.md)
 
 ## 運用ルール
 
