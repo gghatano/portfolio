@@ -7,7 +7,7 @@
   "tech": ["Astro", "TypeScript", "Zod", "Biome", "GitHub Pages"],
   "links": [
     { "label": "Repo", "url": "https://github.com/gghatano/portfolio" },
-    { "label": "Live", "url": "https://gghatano.github.io/portfolio/" }
+    { "label": "Live", "url": "https://portfolio.gghatano.com/" }
   ],
   "priority": 1,
   "icon": "site",

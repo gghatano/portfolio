@@ -22,11 +22,15 @@ const canonical = new URL(fullPath, siteUrl).toString();
 // 公開先確定前は空にしておく（404 を踏ませない方が良い）。
 const og = ogImage ? new URL(`${base}/${ogImage.replace(/^\//, '')}`, siteUrl).toString() : null;
 const twitterCard = og ? 'summary_large_image' : 'summary';
+
+// テスト環境（GitHub Pages）のビルドでだけ立てる。本番と同じ中身が検索に載らないようにする。
+const noindex = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
 
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

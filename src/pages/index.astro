@@ -12,9 +12,7 @@ import { url } from '~/lib/url';
 const profileEntry = await getEntry('profile', 'main');
 if (!profileEntry) throw new Error('profile/main.json が見つかりません');
 const profile = profileEntry.data;
-const paragraphs = profile.bio_md.split(/\n\n+/u);
-const lede = paragraphs[0] ?? '';
-const restBio = paragraphs.slice(1);
+const lede = profile.bio_md.split(/\n\n+/u)[0] ?? '';
 
 const products = (await getCollection('products')).sort((a, b) => {
   const pa = a.data.priority ?? 999;
@@ -27,13 +25,13 @@ const products = (await getCollection('products')).sort((a, b) => {
 
 const talks = (await getCollection('talks'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .slice(0, 3);
+  .slice(0, 1);
 const publications = (await getCollection('publications'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .slice(0, 3);
+  .slice(0, 1);
 const careerEntries = (await getCollection('career'))
   .sort((a, b) => b.data.period_start.localeCompare(a.data.period_start))
-  .slice(0, 3);
+  .slice(0, 1);
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -94,7 +92,7 @@ const personJsonLd = {
   </section>
 
   <section class="section preview" aria-labelledby="preview-talks">
-    <h2 id="preview-talks">直近の発表</h2>
+    <h2 id="preview-talks">最新の発表</h2>
     {talks.length === 0 ? (
       <p class="empty">まだ登壇情報はありません。</p>
     ) : (
@@ -109,11 +107,11 @@ const personJsonLd = {
         ))}
       </ul>
     )}
-    <p class="more"><a href={url('/talks/')}>すべての発表を見る →</a></p>
+    <p class="more"><a href={url('/talks/')} aria-label="発表の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   <section class="section preview" aria-labelledby="preview-pubs">
-    <h2 id="preview-pubs">直近の論文・寄稿</h2>
+    <h2 id="preview-pubs">最新の論文・寄稿</h2>
     {publications.length === 0 ? (
       <p class="empty">まだ論文・寄稿はありません。</p>
     ) : (
@@ -128,7 +126,7 @@ const personJsonLd = {
         ))}
       </ul>
     )}
-    <p class="more"><a href={url('/publications/')}>すべての論文・寄稿を見る →</a></p>
+    <p class="more"><a href={url('/publications/')} aria-label="論文・寄稿の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   <section class="section preview" aria-labelledby="preview-career">
@@ -143,15 +141,8 @@ const personJsonLd = {
         </li>
       ))}
     </ul>
-    <p class="more"><a href={url('/career/')}>すべての経歴を見る →</a></p>
+    <p class="more"><a href={url('/career/')} aria-label="経歴の詳細はこちら">詳細はこちら →</a></p>
   </section>
-
-  {restBio.length > 0 && (
-    <section class="section bio-rest" aria-labelledby="bio-rest-heading">
-      <h2 id="bio-rest-heading">もう少し詳しく</h2>
-      {restBio.map((p) => <p>{p}</p>)}
-    </section>
-  )}
 </BaseLayout>
 
 <style>
@@ -301,16 +292,5 @@ const personJsonLd = {
   .empty {
     color: var(--c-text-muted);
     padding-block: var(--space-3);
-  }
-
-  /* Bio rest */
-  .bio-rest {
-    color: var(--c-text);
-  }
-  .bio-rest p {
-    max-width: var(--measure-prose);
-  }
-  .bio-rest p + p {
-    margin-top: 1em;
   }
 </style>

@@ -1,0 +1,12 @@
+// 本番: main を Cloudflare Workers Builds がビルドし、dist/ を静的アセットとして配信する。
+// サーバー処理は持たないので、Astro の Cloudflare アダプタは使わない。
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "compatibility_date": "2026-10-08",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "portfolio.gghatano.com", "custom_domain": true }]
+}
