@@ -12,9 +12,7 @@ import { url } from '~/lib/url';
 const profileEntry = await getEntry('profile', 'main');
 if (!profileEntry) throw new Error('profile/main.json が見つかりません');
 const profile = profileEntry.data;
-const paragraphs = profile.bio_md.split(/\n\n+/u);
-const lede = paragraphs[0] ?? '';
-const restBio = paragraphs.slice(1);
+const lede = profile.bio_md.split(/\n\n+/u)[0] ?? '';
 
 const products = (await getCollection('products')).sort((a, b) => {
   const pa = a.data.priority ?? 999;
@@ -145,13 +143,6 @@ const personJsonLd = {
     </ul>
     <p class="more"><a href={url('/career/')} aria-label="経歴の詳細はこちら">詳細はこちら →</a></p>
   </section>
-
-  {restBio.length > 0 && (
-    <section class="section bio-rest" aria-labelledby="bio-rest-heading">
-      <h2 id="bio-rest-heading">もう少し詳しく</h2>
-      {restBio.map((p) => <p>{p}</p>)}
-    </section>
-  )}
 </BaseLayout>
 
 <style>
@@ -301,16 +292,5 @@ const personJsonLd = {
   .empty {
     color: var(--c-text-muted);
     padding-block: var(--space-3);
-  }
-
-  /* Bio rest */
-  .bio-rest {
-    color: var(--c-text);
-  }
-  .bio-rest p {
-    max-width: var(--measure-prose);
-  }
-  .bio-rest p + p {
-    margin-top: 1em;
   }
 </style>
