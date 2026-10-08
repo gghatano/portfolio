@@ -27,13 +27,13 @@ const products = (await getCollection('products')).sort((a, b) => {
 
 const talks = (await getCollection('talks'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .slice(0, 3);
+  .slice(0, 1);
 const publications = (await getCollection('publications'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .slice(0, 3);
+  .slice(0, 1);
 const careerEntries = (await getCollection('career'))
   .sort((a, b) => b.data.period_start.localeCompare(a.data.period_start))
-  .slice(0, 3);
+  .slice(0, 1);
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -94,7 +94,7 @@ const personJsonLd = {
   </section>
 
   <section class="section preview" aria-labelledby="preview-talks">
-    <h2 id="preview-talks">直近の発表</h2>
+    <h2 id="preview-talks">最新の発表</h2>
     {talks.length === 0 ? (
       <p class="empty">まだ登壇情報はありません。</p>
     ) : (
@@ -109,11 +109,11 @@ const personJsonLd = {
         ))}
       </ul>
     )}
-    <p class="more"><a href={url('/talks/')}>すべての発表を見る →</a></p>
+    <p class="more"><a href={url('/talks/')} aria-label="発表の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   <section class="section preview" aria-labelledby="preview-pubs">
-    <h2 id="preview-pubs">直近の論文・寄稿</h2>
+    <h2 id="preview-pubs">最新の論文・寄稿</h2>
     {publications.length === 0 ? (
       <p class="empty">まだ論文・寄稿はありません。</p>
     ) : (
@@ -128,7 +128,7 @@ const personJsonLd = {
         ))}
       </ul>
     )}
-    <p class="more"><a href={url('/publications/')}>すべての論文・寄稿を見る →</a></p>
+    <p class="more"><a href={url('/publications/')} aria-label="論文・寄稿の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   <section class="section preview" aria-labelledby="preview-career">
@@ -143,7 +143,7 @@ const personJsonLd = {
         </li>
       ))}
     </ul>
-    <p class="more"><a href={url('/career/')}>すべての経歴を見る →</a></p>
+    <p class="more"><a href={url('/career/')} aria-label="経歴の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   {restBio.length > 0 && (
