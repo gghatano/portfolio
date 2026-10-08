@@ -142,7 +142,7 @@ pnpm sync:works -- --write  # JSON に反映
 
 `updated` はコミットされたスナップショットなので、**並び順の鮮度 = 同期ジョブの実行間隔**になる。
 [`.github/workflows/sync-works.yml`](.github/workflows/sync-works.yml) が **毎日 09:00 JST** に
-同期し、差分があれば `src/content/works/` だけを commit して Pages デプロイを呼ぶ。頻度を変えるときは
+同期し、差分があれば `src/content/works/` だけを `main` に commit する（本番は Cloudflare が push を検知してデプロイする）。頻度を変えるときは
 同ファイルの `cron` を書き換える（例: 毎週月曜なら `0 0 * * 1`）。手動で回すなら Actions タブから
 `Sync works cards` を `workflow_dispatch` する。
 
@@ -170,22 +170,41 @@ CSS Variables で `:root` / `:root[data-theme='light'|'dark']` の 2 経路を�
 
 ## デプロイ
 
-公開先は **プロジェクトサイト** `https://gghatano.github.io/portfolio/`。`main` への push をトリガに [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) が GitHub Pages へ自動デプロイする。
+| 環境 | ブランチ | 配信先 | URL |
+| --- | --- | --- | --- |
+| 本番 | `main` | Cloudflare Workers | `https://portfolio.gghatano.com/` |
+| テスト | `develop` | GitHub Pages | `https://gghatano.github.io/portfolio/`（全ページ `noindex`） |
 
-ワークフローの流れ:
+### 本番（Cloudflare Workers）
+
+Cloudflare Workers Builds がリポジトリの push を検知し、`pnpm run build` のあと [`wrangler.jsonc`](wrangler.jsonc) に従って `dist/` を静的アセットとして配信する。`main` が本番、それ以外のブランチはプレビュー版としてアップロードされる。
+
+- 本番 URL は `astro.config.mjs` の `SITE_URL` 既定値（`https://portfolio.gghatano.com`）。Cloudflare 側で環境変数を渡す必要はない。
+- 独自ドメインは `wrangler.jsonc` の `routes` で割り当てる（`gghatano.com` のゾーンが同じ Cloudflare アカウントにある前提）。
+- サブドメインを変えるときは、`wrangler.jsonc` の `routes`、`astro.config.mjs` の既定値、`src/content/{products,works}/portfolio.json` のリンクをそろえて変える。
+
+### テスト環境（GitHub Pages）
+
+`develop` への push（または Actions タブからの手動実行）で [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) が GitHub Pages へデプロイする。
 
 1. pnpm install → `pnpm lint` / `pnpm exec astro check` / `pnpm build`
-2. `SITE_URL=https://gghatano.github.io` / `SITE_BASE=/portfolio/` を env で渡す
+2. `SITE_URL=https://gghatano.github.io` / `SITE_BASE=/portfolio/` / `PUBLIC_SITE_NOINDEX=true` を env で渡す
 3. `actions/upload-pages-artifact` で `dist/` を artifact 化
 4. `actions/deploy-pages` で公開
 
+`PUBLIC_SITE_NOINDEX=true` のビルドは全ページに `<meta name="robots" content="noindex, nofollow">` を出す。本番と同じ中身が検索結果に並ばないようにするため。
+
+### 検査
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) が PR と `main` / `develop` への push で lint・型チェック・ビルドを走らせる（デプロイはしない）。
+
 ### 初回セットアップ（リポジトリ管理者の作業）
 
-GitHub の **Settings → Pages → Build and deployment** で **Source** を `GitHub Actions` に設定する。`actions/configure-pages@v5` が自動で有効化を試みるが、組織権限などで失敗するケースは手動で。
+- GitHub の **Settings → Pages → Build and deployment** で **Source** を `GitHub Actions` に設定する。
+- **Settings → Environments → github-pages** の **Deployment branches** で `develop` を許可する（既定では `main` のみのことがある）。
+- `develop` ブランチを作る。`sync-works.yml` は `main` にだけ commit するので、テスト環境を最新にするときは `main` を `develop` に取り込む。
 
-### 別構成への切替
-
-ユーザーサイト (`<owner>.github.io`) や独自ドメインに切り替える場合は、`.github/workflows/deploy.yml` の `SITE_URL` / `SITE_BASE` を変更する。内部リンクはすべて `import.meta.env.BASE_URL` 経由 (`src/lib/url.ts`) で組み立てているため、env 値の差し替えだけで両形態に対応できる。
+内部リンクはすべて `import.meta.env.BASE_URL` 経由 (`src/lib/url.ts`) で組み立てているため、本番（`/`）とテスト環境（`/portfolio/`）の両方で同じソースが動く。
 
 ### TODO
 

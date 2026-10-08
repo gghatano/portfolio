@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-const SITE = process.env.SITE_URL ?? 'https://example.github.io';
+// 既定値は本番（Cloudflare Workers）。テスト環境の GitHub Pages は deploy.yml で上書きする。
+const SITE = process.env.SITE_URL ?? 'https://portfolio.gghatano.com';
 const BASE = process.env.SITE_BASE ?? '/';
 
 export default defineConfig({

@@ -1,8 +1,10 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (test)
 
+# GitHub Pages はテスト環境。develop への push で更新する。
+# 本番は main を Cloudflare Workers がビルド・配信する（wrangler.jsonc）。
 on:
   push:
-    branches: [main]
+    branches: [develop]
   workflow_dispatch:
 
 # Pages デプロイは同時に 1 つだけ。in-progress を中断はせず、新しいビルドを次にキューイングする。
@@ -22,6 +24,8 @@ jobs:
       # プロジェクトサイト構成: https://<owner>.github.io/<repo>/
       SITE_URL: https://gghatano.github.io
       SITE_BASE: /portfolio/
+      # テスト環境なので全ページを noindex にする
+      PUBLIC_SITE_NOINDEX: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
