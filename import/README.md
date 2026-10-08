@@ -11,7 +11,6 @@
 | talks | [`talks.md`](talks.md) | `src/content/talks/<slug>.md` | `.md` |
 | publications | [`publications.md`](publications.md) | `src/content/publications/<slug>.md` | `.md` |
 | affiliations | [`affiliations.md`](affiliations.md) | `src/content/affiliations/<slug>.json` | `.json` |
-| products | [`products.md`](products.md) | `src/content/products/<slug>.json` | `.json` |
 
 ## フォーマット規約
 
@@ -22,7 +21,6 @@
 - 3 行目以降: データ
 - セル中で `|` を使いたい場合は `\|` でエスケープ
 - 配列フィールドの区切り:
-  - `tech`: カンマ `,`
   - `highlights`: セミコロン `;`（要素内にカンマが入りうるため）
   - `authors`: セミコロン `;`（自分は `**畑野 拓馬**` のように `**` で囲む）
   - `links`: `ラベル=URL` をカンマ区切り。例: `Repo=https://..., Live=https://...`
@@ -31,7 +29,7 @@
 
 ### body セクション
 
-長文（abstract / description_md / bio_md）は表の下に `## body: <slug>` 見出しで本文を書く。
+長文（abstract / bio_md）は表の下に `## body: <slug>` 見出しで本文を書く。
 
 ```markdown
 ## body: 2026-jsconf

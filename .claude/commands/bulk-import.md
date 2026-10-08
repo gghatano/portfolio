@@ -1,6 +1,6 @@
 ---
 description: import/<collection>.md の Markdown 表と body セクションを読んで src/content/<collection>/ に分解する
-argument-hint: <products | talks | publications | career | affiliations | profile>
+argument-hint: <talks | publications | career | affiliations | profile>
 allowed-tools: Bash, Read, Write
 ---
 
@@ -9,7 +9,7 @@ allowed-tools: Bash, Read, Write
 ## 引数
 
 `$ARGUMENTS` は対象コレクション名:
-- `products` / `talks` / `publications` / `career` / `affiliations` / `profile`
+- `talks` / `publications` / `career` / `affiliations` / `profile`
 - 空 → 「どのコレクションか教えてください」
 
 ## 入力フォーマット
@@ -47,7 +47,6 @@ allowed-tools: Bash, Read, Write
 
 | collection | path | format |
 | --- | --- | --- |
-| products | `src/content/products/<slug>.json` | JSON |
 | talks | `src/content/talks/<slug>.md` | frontmatter + body |
 | publications | `src/content/publications/<slug>.md` | frontmatter + body |
 | career | `src/content/career/<slug>.json` | JSON |
@@ -57,7 +56,6 @@ allowed-tools: Bash, Read, Write
 body の対応:
 - `talks`: body → md 本文
 - `publications`: body → md 本文
-- `products`: body → JSON `description_md` フィールド
 - `profile`: body → JSON `bio_md` フィールド
 
 ## 手順

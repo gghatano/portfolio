@@ -12,15 +12,12 @@ if (!profileEntry) throw new Error('profile/main.json が見つかりません')
 const profile = profileEntry.data;
 const lede = profile.bio_md.split(/\n\n+/u)[0] ?? '';
 
-// /works/ と同じ並び（ピックアップ = priority 昇順 → 最終更新の新しい順）の先頭 1 件。
-const pickups = (await getCollection('works'))
-  .sort((a, b) => {
-    const pa = a.data.priority ?? Number.POSITIVE_INFINITY;
-    const pb = b.data.priority ?? Number.POSITIVE_INFINITY;
-    if (pa !== pb) return pa - pb;
-    return b.data.updated.localeCompare(a.data.updated);
-  })
-  .slice(0, 1);
+// トップに出す作成物は profile.pickup で明示的に指定する（/works/ の並び順とは独立）。
+const pickup = profile.pickup ? await getEntry(profile.pickup) : undefined;
+if (profile.pickup && !pickup) {
+  throw new Error(`profile.pickup の作成物が見つかりません: ${profile.pickup.id}`);
+}
+const pickups = pickup ? [pickup] : [];
 
 const talks = (await getCollection('talks'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
