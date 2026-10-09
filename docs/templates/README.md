@@ -10,20 +10,8 @@
 | 論文・寄稿 | [`publication.md.template`](publication.md.template) | `src/content/publications/<slug>.md` | `.md` |
 | 経歴 | [`career.json.template`](career.json.template) | `src/content/career/<slug>.json` | `.json` |
 | 所属 | [`affiliation.json.template`](affiliation.json.template) | `src/content/affiliations/<slug>.json` | `.json` |
-| プロダクト | [`product.json.template`](product.json.template) | `src/content/products/<slug>.json` | `.json` |
 
 profile (`src/content/profile/main.json`) は singleton なので雛形は持たない。直接編集する。
-
-## products の `icon` フィールド
-
-トップのグリッドセルに描画されるアイコン。次のいずれか:
-
-- **ピクトグラム名**（推奨）: SVG が描画される
-  - `site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss`
-- **1〜4 文字の任意の文字**: フレーム内に文字として描画される（漢字 1 文字推奨。例 `"畑"`）
-- **省略**: name の先頭文字が文字として描画される
-
-新しいピクトグラムを追加したい場合は [`src/components/icons/ProductIcon.astro`](../../src/components/icons/ProductIcon.astro) の `KNOWN_PICTOGRAMS` セットと `<svg>` 内 conditional に追加する。
 
 ## slug 命名
 

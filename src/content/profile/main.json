@@ -3,6 +3,7 @@
   "name_en": "Takuma Hatano",
   "tagline": "プライバシー保護技術の研究員 / 安心安全なデータ流通の社会実装",
   "bio_md": "日鉄ソリューションズ株式会社 システム研究開発センターの研究員として、安心安全なデータ流通を目指した研究開発をリードしています。特に匿名加工情報・仮名加工情報・合成データなどのプライバシー保護技術 (PETs) に関心を持ち、医療・金融・自治体等の領域でのデータ利活用支援、技術検証、顧客案件への適用に取り組んでいます。",
+  "pickup": "bleague-rotation",
   "links": [
     { "label": "GitHub", "url": "https://github.com/gghatano" },
     { "label": "X (Twitter)", "url": "https://x.com/gg_hatano", "rel": "me" },

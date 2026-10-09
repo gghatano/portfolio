@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, reference, z } from 'astro:content';
 
 const yearMonth = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/u, 'period は YYYY-MM 形式');
 const yearMonthOrPresent = z.union([yearMonth, z.literal('present')]);
@@ -24,6 +24,8 @@ const profile = defineCollection({
     bio_md: z.string().min(1),
     avatar: z.string().optional(),
     links: z.array(linkSchema).default([]),
+    /** トップの「作成物のピックアップ」に出す works のエントリ（ファイル名から .json を除いたもの） */
+    pickup: reference('works').optional(),
   }),
 });
 
@@ -97,33 +99,6 @@ const affiliations = defineCollection({
   }),
 });
 
-// プロダクト / 開発したもの。トップページに 4 列グリッドで全件表示する想定。
-// 各セルはアイコン + 名前のみで、詳細は /products/<slug>/ で展開する。
-const products = defineCollection({
-  type: 'data',
-  schema: z.object({
-    name: z.string().min(1),
-    tagline: z.string().min(1),
-    period_start: yearMonth.optional(),
-    period_end: yearMonthOrPresent.optional(),
-    role: z.string().optional(),
-    tech: z.array(z.string()).optional(),
-    links: z.array(linkSchema).optional(),
-    priority: z.number().int().optional(),
-    /**
-     * グリッドのアイコンに使う識別子。
-     * - ピクトグラム名 (`site` / `review` / `type` / `billing` / `speed` / `translate` / `book` / `oss`) → SVG として描画
-     * - それ以外の 1〜4 文字 → 文字としてフレーム内に描画
-     * - 省略時は name の先頭文字を文字として描画
-     */
-    icon: z.string().min(1).max(16).optional(),
-    /** 詳細ページに表示する追加の説明（任意、Markdown 段落区切り） */
-    description_md: z.string().optional(),
-    /** プロダクトの主要 URL（任意 / links とは別。サイト URL や代表リンクに使う） */
-    url: z.string().url().optional(),
-  }),
-});
-
 // 作成物（リポジトリ）。公開ページが生きているものだけを 1 件 1 ファイルで持ち、
 // /works/ にカードとして並べる。API 由来のフィールド（language / updated / stars）は
 // `pnpm sync:works` で洗い替えるので、手で書き換えても次回同期で上書きされる。
@@ -147,7 +122,7 @@ const works = defineCollection({
     stars: z.number().int().nonnegative().default(0),
     /**
      * ピックアップ。値を持つものが更新日より先に、昇順で並ぶ。
-     * 省略したものは最終更新の新しい順（`products.priority` と同じ意味で使う）。
+     * 省略したものは最終更新の新しい順。
      */
     priority: z.number().int().optional(),
     /** 公開ページが認証を要求するか。`auth` は Cloudflare Access などで保護されているもの */
@@ -163,7 +138,6 @@ export const collections = {
   talks,
   publications,
   affiliations,
-  products,
   works,
 };
 

@@ -1,12 +1,10 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-import ProductIcon from '~/components/icons/ProductIcon.astro';
 import EntryRow from '~/components/lists/EntryRow.astro';
 import ExternalLink from '~/components/lists/ExternalLink.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatDate, formatYearMonth } from '~/lib/format';
-import { publicationTypeLabel, talkTypeLabel } from '~/lib/labels';
-import { defaultProductIcon } from '~/lib/products';
+import { publicationTypeLabel, talkTypeLabel, workCategoryLabel } from '~/lib/labels';
 import { url } from '~/lib/url';
 
 const profileEntry = await getEntry('profile', 'main');
@@ -14,14 +12,12 @@ if (!profileEntry) throw new Error('profile/main.json が見つかりません')
 const profile = profileEntry.data;
 const lede = profile.bio_md.split(/\n\n+/u)[0] ?? '';
 
-const products = (await getCollection('products')).sort((a, b) => {
-  const pa = a.data.priority ?? 999;
-  const pb = b.data.priority ?? 999;
-  if (pa !== pb) return pa - pb;
-  const sa = a.data.period_start ?? '';
-  const sb = b.data.period_start ?? '';
-  return sb.localeCompare(sa);
-});
+// トップに出す作成物は profile.pickup で明示的に指定する（/works/ の並び順とは独立）。
+const pickup = profile.pickup ? await getEntry(profile.pickup) : undefined;
+if (profile.pickup && !pickup) {
+  throw new Error(`profile.pickup の作成物が見つかりません: ${profile.pickup.id}`);
+}
+const pickups = pickup ? [pickup] : [];
 
 const talks = (await getCollection('talks'))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
@@ -70,25 +66,23 @@ const personJsonLd = {
     )}
   </section>
 
-  <section class="section products" id="products" aria-labelledby="products-heading">
-    <h2 id="products-heading">プロダクト・開発したもの</h2>
-    {products.length === 0 ? (
-      <p class="empty">プロダクト情報はまだありません。</p>
+  <section class="section preview" aria-labelledby="preview-works">
+    <h2 id="preview-works">作成物のピックアップ</h2>
+    {pickups.length === 0 ? (
+      <p class="empty">作成物はまだありません。</p>
     ) : (
-      <ul class="product-grid">
-        {products.map((p) => (
-          <li class="product-cell-wrap">
-            <a href={url(`/products/${p.id}/`)} class="product-cell">
-              <span class="product-icon" aria-hidden="true">
-                <ProductIcon icon={p.data.icon} fallback={defaultProductIcon(p.data.name)} />
-              </span>
-              <span class="product-name">{p.data.name}</span>
-            </a>
+      <ul class="rows">
+        {pickups.map((w) => (
+          <li>
+            <EntryRow date={formatDate(w.data.updated)} dateTime={w.data.updated} badge={workCategoryLabel[w.data.category]}>
+              <h3 class="row-title"><ExternalLink href={w.data.site_url} label={w.data.title} /></h3>
+              <p class="row-meta">{w.data.summary}</p>
+            </EntryRow>
           </li>
         ))}
       </ul>
     )}
-    <p class="more"><a href={url('/works/')}>公開ページのある作成物をすべて見る →</a></p>
+    <p class="more"><a href={url('/works/')} aria-label="作成物の詳細はこちら">詳細はこちら →</a></p>
   </section>
 
   <section class="section preview" aria-labelledby="preview-talks">
@@ -191,79 +185,7 @@ const personJsonLd = {
     letter-spacing: 0.02em;
   }
 
-  /* Products grid: 4 列 desktop / 2 列 tablet / 1 列 mobile。
-     セルごとに細い罫線を持たせ、最終行が埋まらない場合に空白が広がらないようにする。 */
-  .product-grid {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-  }
-  .product-cell-wrap {
-    /* 行が浮かないように li 自体は装飾しない */
-  }
-  .product-cell {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-    min-height: 9rem;
-    border: 1px solid var(--c-rule);
-    border-radius: 4px;
-    transition:
-      background var(--duration-quick) var(--easing-quick),
-      border-color var(--duration-quick) var(--easing-quick);
-  }
-  .product-cell:hover {
-    background: var(--c-bg-elev);
-    border-color: var(--c-rule-strong);
-  }
-  .product-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 1px solid var(--c-rule-strong);
-    border-radius: 4px;
-    font-size: 1.35rem;
-    font-weight: 500;
-    color: var(--c-accent);
-    flex-shrink: 0;
-  }
-  .product-icon :global(svg.pictogram) {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  .product-name {
-    display: inline-block;
-    align-self: flex-start;
-    font-weight: 600;
-    font-size: 0.95rem;
-    line-height: 1.45;
-    color: var(--c-text);
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--duration-quick) var(--easing-quick);
-  }
-  .product-cell:hover .product-name {
-    border-bottom-color: var(--c-accent);
-  }
-
-  @media (max-width: 900px) {
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 480px) {
-    .product-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Preview sections (talks/pubs/career) */
+  /* Preview sections (works/talks/pubs/career) */
   .rows {
     list-style: none;
   }

@@ -36,7 +36,6 @@ pnpm sync:works  # 作成物カードの GitHub 情報を洗い替え（--write 
 | `talks` | Markdown（frontmatter + 本文） | `src/content/talks/<slug>.md` |
 | `publications` | Markdown（frontmatter + 本文） | `src/content/publications/<slug>.md` |
 | `affiliations` | JSON（複数） | `src/content/affiliations/<slug>.json` |
-| `products` | JSON（複数 / トップに常時表示） | `src/content/products/<slug>.json` |
 | `works` | JSON（複数 / `/works/` にカード表示） | `src/content/works/<slug>.json` |
 
 スキーマ定義は [`src/content/config.ts`](src/content/config.ts)。各フィールドの型・必須／任意・enum 値はそこで一元管理しているので、項目を増やすときも先にスキーマを編集する。
@@ -117,8 +116,9 @@ abstract 本文。
 公開ページが生きているリポジトリを 1 件 1 ファイルで持ち、`/works/` にカードとして並べる。「作ったものはとりあえずここを見れば辿れる」状態を保つためのページ。
 
 - 手で書くフィールド: `repo`（`owner/name`）/ `title` / `summary` / `site_url` / `category` / `priority`
-- 並び順は **`priority` を持つもの（ピックアップ）が昇順で先頭 → 残りは `updated` の新しい順**。常にトップに出したいものだけ `priority` を振る（`products.priority` と同じ意味）
+- 並び順は **`priority` を持つもの（ピックアップ）が昇順で先頭 → 残りは `updated` の新しい順**。`/works/` の先頭に固定したいものだけ `priority` を振る
 - 同期で洗い替わるフィールド: `language` / `updated` / `stars` / `repo_private`
+- トップページの「作成物のピックアップ」に出す 1 件は、`src/content/profile/main.json` の `pickup` にエントリ名（ファイル名から `.json` を除いたもの）を書いて指定する。`priority` とは独立で、書き換えない限り変わらない
 - 認証が要る公開ページは `"access": "auth"` を付ける。カードに「要認証」と表示し、リンク切れ判定でも 302 / 403 を正常として扱う（Cloudflare Access のログインに飛ぶのが正常なため）
 - private リポジトリの成果物も載せられる。`repo_private` が true のカードは GitHub リンクを出さず、リポジトリ名を「（非公開リポジトリ）」付きで表示するだけにする
 - `category` は `privacy` / `synthetic` / `analysis` / `app` / `site`。増やすときは `src/content/config.ts` の `workCategory`、`src/lib/labels.ts` の `workCategoryLabel`、`src/lib/works.ts` の `workCategoryOrder` を同時に更新する。
@@ -181,7 +181,7 @@ Cloudflare Workers Builds がリポジトリの push を検知し、`pnpm run bu
 
 - 本番 URL は `astro.config.mjs` の `SITE_URL` 既定値（`https://portfolio.gghatano.com`）。Cloudflare 側で環境変数を渡す必要はない。
 - 独自ドメインは `wrangler.jsonc` の `routes` で割り当てる（`gghatano.com` のゾーンが同じ Cloudflare アカウントにある前提）。
-- サブドメインを変えるときは、`wrangler.jsonc` の `routes`、`astro.config.mjs` の既定値、`src/content/{products,works}/portfolio.json` のリンクをそろえて変える。
+- サブドメインを変えるときは、`wrangler.jsonc` の `routes`、`astro.config.mjs` の既定値、`src/content/works/portfolio.json` のリンクをそろえて変える。
 
 ### テスト環境（GitHub Pages）
 
