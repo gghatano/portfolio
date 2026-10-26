@@ -1,0 +1,54 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import EntryRow from '~/components/lists/EntryRow.astro';
+import ExternalLink from '~/components/lists/ExternalLink.astro';
+import SectionHeader from '~/components/lists/SectionHeader.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatYearMonth } from '~/lib/format';
+
+const items = await Promise.all(
+  (await getCollection('awards'))
+    .sort((a, b) => b.data.date.localeCompare(a.data.date))
+    .map(async (a) => ({ ...a, work: a.data.work ? await getEntry(a.data.work) : undefined })),
+);
+---
+
+<BaseLayout
+  title="受賞"
+  description="コンテストでの入賞・表彰の一覧。"
+  path="/awards/"
+>
+  <SectionHeader eyebrow="Awards" title="受賞" lead="コンテストでの入賞・表彰です。" />
+
+  {items.length === 0 ? (
+    <p class="empty">受賞情報はまだありません。</p>
+  ) : (
+    <ul class="rows">
+      {items.map((a) => (
+        <li>
+          <EntryRow date={formatYearMonth(a.data.date)}>
+            <h2 class="row-title">
+              {a.data.url ? <ExternalLink href={a.data.url} label={a.data.event} /> : a.data.event}
+              <span class="rank">{a.data.title}</span>
+            </h2>
+            {a.data.organizer && <p class="role">{a.data.organizer}</p>}
+            {a.data.summary && <p class="summary">{a.data.summary}</p>}
+            {a.work && (
+              <p class="related">関連: <ExternalLink href={a.work.data.site_url} label={a.work.data.title} /></p>
+            )}
+          </EntryRow>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  ul.rows { list-style: none; }
+  .row-title { font-size: 1.1rem; font-weight: 600; }
+  .rank { margin-left: var(--space-2); }
+  .role { color: var(--c-text-muted); margin-top: var(--space-1); }
+  .summary { margin-top: var(--space-3); }
+  .related { margin-top: var(--space-2); font-size: var(--fs-small); }
+  .empty { color: var(--c-text-muted); }
+</style>
