@@ -132,6 +132,26 @@ const works = defineCollection({
   }),
 });
 
+// 受賞。コンテストの入賞や表彰を 1 件 1 ファイルで持ち、/awards/ に新しい順で並べる。
+const awards = defineCollection({
+  type: 'data',
+  schema: z.object({
+    /** 受賞・結果発表の年月 */
+    date: yearMonth,
+    /** 賞・順位（例: 総合第2位） */
+    title: z.string().min(1),
+    /** コンテスト・表彰の名称 */
+    event: z.string().min(1),
+    /** 主催 */
+    organizer: z.string().optional(),
+    summary: z.string().optional(),
+    /** 関連する作成物（ファイル名から .json を除いたもの） */
+    work: reference('works').optional(),
+    /** 大会ページなどの関連 URL（任意） */
+    url: z.string().url().optional(),
+  }),
+});
+
 export const collections = {
   profile,
   career,
@@ -139,6 +159,7 @@ export const collections = {
   publications,
   affiliations,
   works,
+  awards,
 };
 
 export type TalkType = z.infer<typeof talkType>;
